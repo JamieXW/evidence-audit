@@ -1,0 +1,409 @@
+{
+  "counts": {
+    "total": 48,
+    "submitted": 48,
+    "supported": 24,
+    "positive": 24,
+    "negative": 24,
+    "correct": 48,
+    "true_positive": 24,
+    "false_positive": 0,
+    "verified_witness": 24,
+    "underdetermined": 24
+  },
+  "metrics": {
+    "coverage": 1.0,
+    "accuracy_including_abstentions": 1.0,
+    "underdetermined_recall": 1.0,
+    "false_alarm_rate": 0.0,
+    "witness_validity_among_flags": 1.0,
+    "verified_detection_recall": 1.0
+  },
+  "details": [
+    {
+      "id": "751e9e01cb9babb6",
+      "family": "loan",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "c7ca482853f3d8a3",
+      "family": "loan",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "951e76d554a59db5",
+      "family": "loan",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "7c7eda3333152097",
+      "family": "loan",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "ea2f4b4f5506289d",
+      "family": "loan",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "03eeb7b28748f41e",
+      "family": "loan",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "06f7e8395dbdb88c",
+      "family": "loan",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "13715075c53b0e82",
+      "family": "loan",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "eb77ea93ff7ab501",
+      "family": "loan",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "cccdcc125db7c316",
+      "family": "loan",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "fc6279447e0badf8",
+      "family": "loan",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "bd1aee047808a3fc",
+      "family": "loan",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "c4c62e170f1b9205",
+      "family": "loan",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "7780447effb5e54b",
+      "family": "loan",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "de1c57cdfc8030cb",
+      "family": "loan",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "7b5ba23f457cd2db",
+      "family": "loan",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "165ff33de8244693",
+      "family": "inventory",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "0a495c2aa737959b",
+      "family": "inventory",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "31a75298047de4b8",
+      "family": "inventory",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "d6b85a4fdae1e442",
+      "family": "inventory",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "e9a35ab9ae2fc15c",
+      "family": "inventory",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "26770b1af8c20400",
+      "family": "inventory",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "9e296cafdc01c07c",
+      "family": "inventory",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "a6b4450ec1595348",
+      "family": "inventory",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "637ee006e3e516cb",
+      "family": "inventory",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "53eb9d96ae92c007",
+      "family": "inventory",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "82e05c0b95e86886",
+      "family": "inventory",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "148194d1a6391cc8",
+      "family": "inventory",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "f61f1e1cc7d3e9dd",
+      "family": "inventory",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "fc3e2504e9041ad8",
+      "family": "inventory",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "6747bb8f28d9e626",
+      "family": "inventory",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "0008351f7aa2c42f",
+      "family": "inventory",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "42ec2c69bceb6c14",
+      "family": "invoice",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "22f16904316eacf1",
+      "family": "invoice",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "1e8650cd448c740c",
+      "family": "invoice",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "de0c31e2c8a7214a",
+      "family": "invoice",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "8dc2167c1a290a09",
+      "family": "invoice",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "7f2bc98ed30b8a86",
+      "family": "invoice",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "3cd38aa9918c1552",
+      "family": "invoice",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "08433f689f208369",
+      "family": "invoice",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "b46f6eac99a185db",
+      "family": "invoice",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "0c678db246166762",
+      "family": "invoice",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "aa7a3a3cd2c6854a",
+      "family": "invoice",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "d839ed1c8f3f349e",
+      "family": "invoice",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "f675ceb6c1867b1e",
+      "family": "invoice",
+      "variant": "complete",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    },
+    {
+      "id": "2bf15e04d5cc14af",
+      "family": "invoice",
+      "variant": "missing",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "2e533803af95a8b6",
+      "family": "invoice",
+      "variant": "ambiguous",
+      "label": "underdetermined",
+      "verdict": "underdetermined",
+      "verified_witness": true
+    },
+    {
+      "id": "f8dbbf869dbcb853",
+      "family": "invoice",
+      "variant": "distracting",
+      "label": "supported",
+      "verdict": "supported",
+      "verified_witness": false
+    }
+  ],
+  "notice": "Privileged symbolic control ONLY. This validates plumbing, not model performance."
+}

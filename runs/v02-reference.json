@@ -1,0 +1,147 @@
+{
+  "notice": "Reference auditors and shortcuts, no LLM. These are the baselines a model must beat, not model results.",
+  "exhaustive": {
+    "core": {
+      "verdict_accuracy": 1.0,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": 0.0,
+      "certified_recall": 1.0,
+      "certified_recall_where_certifiable": 1.0,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": 0.0,
+      "certificate_tightness": 1.0,
+      "mean_abs_ceiling_estimate_error": 0.0
+    },
+    "stress": {
+      "verdict_accuracy": 0.0,
+      "unsupported_recall": 0.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": 0.0
+    }
+  },
+  "lazy": {
+    "core": {
+      "verdict_accuracy": 0.65,
+      "unsupported_recall": 0.125,
+      "false_alarm_rate": 0.0,
+      "certified_recall": 0.125,
+      "certified_recall_where_certifiable": 0.125,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": 0.0,
+      "certificate_tightness": 0.3417,
+      "mean_abs_ceiling_estimate_error": 5.78
+    },
+    "stress": {
+      "verdict_accuracy": 0.0,
+      "unsupported_recall": 0.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": 0.0
+    }
+  },
+  "sloppy": {
+    "core": {
+      "verdict_accuracy": 0.72,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": 0.4667,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": 0.0,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": 0.9847,
+      "certificate_tightness": 0.0182,
+      "mean_abs_ceiling_estimate_error": 5.95
+    },
+    "stress": {
+      "verdict_accuracy": 1.0,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": 1.0,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": 14.5
+    }
+  },
+  "trusting": {
+    "core": {
+      "verdict_accuracy": 0.6,
+      "unsupported_recall": 0.0,
+      "false_alarm_rate": 0.0,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": 0.0,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": 0.0,
+      "mean_abs_ceiling_estimate_error": null
+    },
+    "stress": {
+      "verdict_accuracy": 0.0,
+      "unsupported_recall": 0.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": null
+    }
+  },
+  "alarmist": {
+    "core": {
+      "verdict_accuracy": 0.4,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": 1.0,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": 0.0,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": 0.0,
+      "mean_abs_ceiling_estimate_error": null
+    },
+    "stress": {
+      "verdict_accuracy": 1.0,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": null
+    }
+  },
+  "withheld_column_shortcut": {
+    "core": {
+      "verdict_accuracy": 0.4,
+      "unsupported_recall": 0.5,
+      "false_alarm_rate": 0.6667,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": 0.0,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": 0.0,
+      "mean_abs_ceiling_estimate_error": null
+    },
+    "stress": {
+      "verdict_accuracy": 1.0,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "invalid_group_rate": null,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": null
+    }
+  }
+}

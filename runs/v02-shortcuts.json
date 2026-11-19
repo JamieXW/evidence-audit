@@ -1,0 +1,9 @@
+{
+  "n_core": 100,
+  "majority_rate": 0.6,
+  "has_withheld_column": 0.6,
+  "n_columns": 0.6,
+  "target_correct": 0.7,
+  "start_correct": 0.61,
+  "target_minus_start": 0.66
+}
