@@ -8,6 +8,9 @@
       "certified_recall": 1.0,
       "certified_recall_where_certifiable": 1.0,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": 0.0,
       "certificate_tightness": 1.0,
       "mean_abs_ceiling_estimate_error": 0.0
@@ -19,6 +22,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": null,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": null,
       "mean_abs_ceiling_estimate_error": 0.0
@@ -32,6 +38,9 @@
       "certified_recall": 0.125,
       "certified_recall_where_certifiable": 0.125,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": 0.0,
       "certificate_tightness": 0.3417,
       "mean_abs_ceiling_estimate_error": 5.78
@@ -43,6 +52,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": null,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": null,
       "mean_abs_ceiling_estimate_error": 0.0
@@ -56,6 +68,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": 0.0,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": 0.9847,
       "certificate_tightness": 0.0182,
       "mean_abs_ceiling_estimate_error": 5.95
@@ -67,7 +82,70 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": null,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": 1.0,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": 14.5
+    }
+  },
+  "subset_near_unique": {
+    "core": {
+      "verdict_accuracy": 1.0,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": 0.0,
+      "certified_recall": 1.0,
+      "certified_recall_where_certifiable": 1.0,
+      "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
+      "invalid_group_rate": 0.0,
+      "certificate_tightness": 1.0,
+      "mean_abs_ceiling_estimate_error": 0.0
+    },
+    "stress": {
+      "verdict_accuracy": 1.0,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "restricted_recall": 1.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
+      "invalid_group_rate": 0.0,
+      "certificate_tightness": null,
+      "mean_abs_ceiling_estimate_error": 14.5
+    }
+  },
+  "subset_careless": {
+    "core": {
+      "verdict_accuracy": 0.72,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": 0.4667,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": 0.0,
+      "false_certified_refutations": 0,
+      "restricted_recall": 1.0,
+      "restricted_refutations_on_supported": 28,
+      "restrictions_that_cut_signal": 36,
+      "invalid_group_rate": 0.0,
+      "certificate_tightness": 0.0,
+      "mean_abs_ceiling_estimate_error": 5.95
+    },
+    "stress": {
+      "verdict_accuracy": 1.0,
+      "unsupported_recall": 1.0,
+      "false_alarm_rate": null,
+      "certified_recall": 0.0,
+      "certified_recall_where_certifiable": null,
+      "false_certified_refutations": 0,
+      "restricted_recall": 1.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
+      "invalid_group_rate": 0.0,
       "certificate_tightness": null,
       "mean_abs_ceiling_estimate_error": 14.5
     }
@@ -80,6 +158,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": 0.0,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": 0.0,
       "mean_abs_ceiling_estimate_error": null
@@ -91,6 +172,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": null,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": null,
       "mean_abs_ceiling_estimate_error": null
@@ -104,6 +188,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": 0.0,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": 0.0,
       "mean_abs_ceiling_estimate_error": null
@@ -115,6 +202,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": null,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": null,
       "mean_abs_ceiling_estimate_error": null
@@ -128,6 +218,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": 0.0,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": 0.0,
       "mean_abs_ceiling_estimate_error": null
@@ -139,6 +232,9 @@
       "certified_recall": 0.0,
       "certified_recall_where_certifiable": null,
       "false_certified_refutations": 0,
+      "restricted_recall": 0.0,
+      "restricted_refutations_on_supported": 0,
+      "restrictions_that_cut_signal": 0,
       "invalid_group_rate": null,
       "certificate_tightness": null,
       "mean_abs_ceiling_estimate_error": null

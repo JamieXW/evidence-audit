@@ -1,0 +1,263 @@
+<title>Collision Certificates</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: a typeset preprint. Centered title block, one serif reading column, ruled tables with captions above, figures with captions below. Ink on paper; one accent, used only for links and the certified value. */
+:root {
+  --bg: #ffffff;
+  --fg: #14161a;
+  --muted: #5b6068;
+  --hair: #c9cdd3;
+  --accent: #1c3f94;
+  --serif: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --sans: "Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Source Code Pro", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #121315; --fg: #ebecee; --muted: #a2a7ae; --hair: #3a3e45; --accent: #a4bbff; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #121315; --fg: #ebecee; --muted: #a2a7ae; --hair: #3a3e45; --accent: #a4bbff; color-scheme: dark; }
+
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--serif); font-size: 18px; line-height: 1.6;
+  padding-block: 64px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.paper { max-width: 40rem; margin: 0 auto; display: flex; flex-direction: column; gap: 1.05rem; }
+.paper > * { margin: 0; min-width: 0; }
+
+.head { display: flex; flex-direction: column; gap: 0.9rem; text-align: center; padding-bottom: 0.6rem; }
+.head > * { margin: 0; }
+h1 { font-weight: 600; font-size: clamp(1.4rem, 5.2vw, 2.3rem); line-height: 1.2; letter-spacing: -0.005em; text-wrap: balance; }
+.author { font-size: 1.1rem; }
+.affil { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); }
+
+.abstract { margin-inline: clamp(0px, 4vw, 2rem) !important; font-size: 0.95rem; line-height: 1.55; }
+.abstract p { margin: 0; }
+.abstract p + p { margin-top: 0.6rem; }
+.status { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+
+h2 { font-weight: 600; font-size: 1.25rem; line-height: 1.3; margin-top: 1.5rem !important; text-wrap: balance; }
+h2 .n { margin-right: 0.75rem; }
+a { color: var(--accent); text-underline-offset: 0.14em; text-decoration-thickness: 1px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code { font-family: var(--mono); font-size: 0.86em; }
+sup.ref { font-family: var(--sans); font-size: 0.72em; }
+sup.ref a { text-decoration: none; }
+ul, ol.list { padding-left: 1.3rem; display: flex; flex-direction: column; gap: 0.55rem; }
+.eq { text-align: center; font-style: italic; padding: 0.2rem 0; overflow-x: auto; white-space: nowrap; }
+
+figure { display: flex; flex-direction: column; gap: 0.6rem; margin-block: 0.6rem !important; }
+figcaption { font-family: var(--sans); font-size: 0.86rem; line-height: 1.45; color: var(--muted); }
+figcaption b { color: var(--fg); font-weight: 600; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-family: var(--sans); font-size: 0.88rem; line-height: 1.4; font-variant-numeric: tabular-nums; border-top: 1.5px solid var(--fg); border-bottom: 1.5px solid var(--fg); }
+th, td { text-align: left; padding: 0.38rem 1rem 0.38rem 0; vertical-align: top; }
+th { font-weight: 600; border-bottom: 1px solid var(--fg); white-space: nowrap; }
+tbody tr:first-child td { padding-top: 0.55rem; }
+tbody tr:last-child td { padding-bottom: 0.55rem; }
+th.num, td.num { text-align: right; }
+th:last-child, td:last-child { padding-right: 0; }
+.data td, .data th { font-family: var(--mono); font-size: 0.82rem; white-space: nowrap; }
+.withheld { color: var(--muted); }
+tr.mark td { font-weight: 600; }
+.note-line { font-family: var(--sans); font-size: 0.86rem; color: var(--muted); }
+
+svg { display: block; min-width: 34rem; width: 100%; height: auto; }
+svg text { font-family: var(--sans); font-size: 12.5px; fill: var(--fg); }
+svg .tick { fill: var(--muted); font-size: 11.5px; }
+svg .axis { stroke: var(--fg); stroke-width: 1; fill: none; }
+svg .lead { stroke: var(--hair); stroke-width: 1; fill: none; }
+svg .gap { stroke: var(--accent); stroke-width: 4; fill: none; }
+svg .dot { fill: var(--fg); stroke: none; }
+svg .dot.ceil { fill: var(--accent); }
+svg .dot.target { fill: var(--bg); stroke: var(--fg); stroke-width: 1.75; }
+svg .ceil-label { fill: var(--accent); font-weight: 600; }
+
+pre { font-family: var(--mono); font-size: 0.82rem; line-height: 1.6; border-left: 1px solid var(--hair); padding: 0.2rem 0 0.2rem 1rem; overflow-x: auto; }
+.refs { font-size: 0.9rem; line-height: 1.5; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.refs li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); }
+.refs li span:first-child { font-family: var(--sans); color: var(--muted); }
+.refs li span:last-child { overflow-wrap: anywhere; }
+footer { margin-top: 2rem !important; padding-top: 1rem; border-top: 1px solid var(--hair); font-family: var(--sans); font-size: 0.82rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.3rem; }
+footer p { margin: 0; }
+</style>
+
+<article class="paper">
+  <header class="head">
+    <h1>Collision certificates: checkable evidence that a target is out of reach</h1>
+    <p class="author">Jamie Wang</p>
+    <p class="affil">Independent project · November 2026</p>
+  </header>
+
+  <div class="abstract">
+    <p><strong>Abstract.</strong> A benchmark task usually comes with a target: the score a strong solver should be able to reach. If the target depends on information the solver never sees, every reward measured against it is too small. This note describes a small tool that can prove a target is too high. The proof is a list of rows the solver cannot tell apart that have different correct answers. A program checks the list against the data, so a wrong claim cannot pass. On 100 synthetic tasks, a short script finds every provable case and raises no false alarm. On 20 harder tasks built to look more like real data, nothing can be proved about every solver. A narrower proof, limited to rules that use a chosen set of columns, covers all 20, but a reviewer has to accept the choice of columns.</p>
+    <p class="status">Status: pilot on synthetic data. No language model was tested.</p>
+  </div>
+
+  <h2><span class="n">1</span>Motivation and question</h2>
+  <p>This project grew out of my work on a business knowledge assistant at Leader Lane, which answers questions from company documents. Some questions cannot be settled by the documents the assistant is given, and a wrong answer alone does not say whether the assistant failed or the question was unanswerable. Abundant's post describes the same problem for research agents. This project is independent of that work and uses no company data.</p>
+  <p>Abundant's post on setting realistic targets<sup class="ref"><a href="#ref-1">[1]</a></sup> measures an agent's progress as</p>
+  <p class="eq">reward = (score − start) / (target − start)</p>
+  <p>where <em>start</em> is a naive baseline and <em>target</em> is the best score a strong solver could realistically reach. If the target is too high, every reward shrinks by the same factor.</p>
+  <p>In the post's second case study the solver sees only part of each antibody. The validation notebook groups cases that look identical to the solver, takes the majority answer in each group, and counts the errors that no rule could avoid. That counting argument belongs to the post. It is the starting point here, and nothing in this note improves on it.</p>
+  <p>The post also describes three layers of review, each checking the one before. This note looks at one link in that chain. When an auditor, human or model, claims a target is out of reach, can the claim be packaged so that a program checks it and nobody has to trust the auditor?</p>
+  <p>Three things are added:</p>
+  <ul>
+    <li>a certificate format and a checker that stays correct when the certificate is wrong or incomplete;</li>
+    <li>a synthetic benchmark that includes cases where something is hidden but the target is still fine;</li>
+    <li>measurements of where the argument stops working.</li>
+  </ul>
+
+  <h2><span class="n">2</span>A collision is a proof</h2>
+  <p>Take a table of 72 loan applications. The solver sees three columns and must predict <code>approved</code>. A fourth column, an underwriter override, is withheld. The proposed target is 68 correct, which is what an oracle given every column scores.</p>
+
+  <figure>
+    <div class="scroll">
+      <table class="data">
+        <thead><tr><th>row</th><th>income_band</th><th>debt_band</th><th>long_term</th><th class="withheld">override (withheld)</th><th>approved</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>1</td><td>1</td><td>1</td><td class="withheld">0</td><td>0</td></tr>
+          <tr><td>8</td><td>1</td><td>1</td><td>1</td><td class="withheld">1</td><td>1</td></tr>
+          <tr><td>20</td><td>1</td><td>1</td><td>1</td><td class="withheld">0</td><td>0</td></tr>
+          <tr><td>39</td><td>1</td><td>1</td><td>1</td><td class="withheld">1</td><td>1</td></tr>
+          <tr><td>42</td><td>1</td><td>1</td><td>1</td><td class="withheld">1</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figcaption><b>Figure 1.</b> One collision group from the example table. The three visible columns are identical in all five rows, so any rule gives them the same answer. Answering 1 gets three right and two wrong; answering 0 gets two right and three wrong.</figcaption>
+  </figure>
+
+  <p>To the solver these five rows are the same row. Whatever it answers, at least two are wrong. The same count works for any group: its size minus its most common label.</p>
+  <p>Seven groups in this table have mixed labels, and together they force 9 errors. No solver limited to the visible columns can score above 63. The target of 68 is refuted. With a start of 37, rewards measured against 68 are at most 0.84 of rewards measured against 63.</p>
+
+  <h2><span class="n">3</span>The checker</h2>
+  <p>A certificate is a list of row groups. The checker keeps a group only if its rows exist, are distinct, match on every visible column, carry at least two different labels, and reuse no row from another group. It then counts the forced errors itself.</p>
+  <ul>
+    <li><strong>A bad certificate cannot produce a false refutation.</strong> Rejecting or dropping groups only loosens the bound. Tests fuzz this with random groups.</li>
+    <li><strong>Nothing is specified by hand.</strong> The check runs against the table, so there is no separate formal model that could disagree with the data.</li>
+    <li><strong>It works in one direction.</strong> It can show a target is too high. It cannot show a target is right.</li>
+  </ul>
+  <p>The bound covers deterministic predictors that use only the visible columns. A randomized predictor obeys it on average.</p>
+
+  <h2><span class="n">4</span>Benchmark</h2>
+  <p>There are 120 synthetic tasks: five families (loans, inventory, invoices, budgets, attendance), four scenarios each, six variants per scenario. Each family has its own labelling rule. Two families are held out.</p>
+  <figure>
+    <figcaption><b>Table 1.</b> Six variants of each scenario. The first five form the core set of 100 tasks. The last is reported separately.</figcaption>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Variant</th><th>Withheld column</th><th>Proposed target</th><th>Truth</th></tr></thead>
+        <tbody>
+          <tr><td>complete</td><td>none</td><td>oracle score</td><td>supported</td></tr>
+          <tr><td>irrelevant</td><td>present, label ignores it</td><td>oracle score</td><td>supported</td></tr>
+          <tr><td>redundant</td><td>present, recoverable from visible columns</td><td>oracle score</td><td>supported</td></tr>
+          <tr><td>withheld</td><td>present, label depends on it</td><td>oracle score</td><td>unsupported</td></tr>
+          <tr><td>optimistic</td><td>none</td><td>oracle score plus half the noise</td><td>unsupported</td></tr>
+          <tr><td>sparse (stress)</td><td>as withheld, plus a near-unique visible column</td><td>oracle score</td><td>unsupported</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>The second and third variants are the hard negatives. Something is hidden, but it does not matter, so an auditor that flags every withheld column is wrong.</p>
+  <p>Ground truth comes from a reference solver: the best visible-only predictor under the generating rule. A target is unsupported when that solver falls short of it.</p>
+
+  <h2><span class="n">5</span>Results without a model</h2>
+  <p>Six reference auditors, none of them a language model, were scored on the 100 core tasks.</p>
+  <figure>
+    <figcaption><b>Table 2.</b> Reference auditors on the core set. False alarms: share of supported tasks called unsupported. Certified recall: share of unsupported tasks where the certificate passed the checker and refuted the target.</figcaption>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Auditor</th><th class="num">Verdict accuracy</th><th class="num">False alarms</th><th class="num">Certified recall</th><th class="num">False claims certified</th></tr></thead>
+        <tbody>
+          <tr><td>Exhaustive: group every row</td><td class="num">1.00</td><td class="num">0.00</td><td class="num">1.00</td><td class="num">0</td></tr>
+          <tr><td>Lazy: three pairs only</td><td class="num">0.65</td><td class="num">0.00</td><td class="num">0.13</td><td class="num">0</td></tr>
+          <tr class="mark"><td>Sloppy: ignores a visible column</td><td class="num">0.72</td><td class="num">0.47</td><td class="num">0.00</td><td class="num">0</td></tr>
+          <tr><td>Always "supported"</td><td class="num">0.60</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0</td></tr>
+          <tr><td>Always "unsupported"</td><td class="num">0.40</td><td class="num">1.00</td><td class="num">0.00</td><td class="num">0</td></tr>
+          <tr><td>Flag any withheld column</td><td class="num">0.40</td><td class="num">0.67</td><td class="num">0.00</td><td class="num">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>The row in bold is the reason for the design. That auditor groups rows carelessly and announces refutations with confidence. It is wrong about 47% of the supported tasks. The checker rejects 98% of its groups and certifies none of its claims.</p>
+
+  <figure>
+    <div class="scroll">
+      <svg viewBox="0 0 720 150" role="img" aria-label="Number line of correct rows out of 72 for the example table: naive start 37, realistic solver 55, certified ceiling 63, proposed target 68.">
+        <line class="axis" x1="40" y1="80" x2="680" y2="80"/>
+        <g class="axis"><line x1="40" y1="76" x2="40" y2="84"/><line x1="192.4" y1="76" x2="192.4" y2="84"/><line x1="344.8" y1="76" x2="344.8" y2="84"/><line x1="497.1" y1="76" x2="497.1" y2="84"/><line x1="649.5" y1="76" x2="649.5" y2="84"/></g>
+        <g text-anchor="middle"><text class="tick" x="40" y="101">30</text><text class="tick" x="192.4" y="101">40</text><text class="tick" x="344.8" y="101">50</text><text class="tick" x="497.1" y="101">60</text><text class="tick" x="649.5" y="101">70</text></g>
+        <line class="gap" x1="542.9" y1="80" x2="619" y2="80"/>
+        <line class="lead" x1="146.7" y1="73" x2="146.7" y2="58"/>
+        <line class="lead" x1="421" y1="73" x2="421" y2="58"/>
+        <line class="lead" x1="542.9" y1="72" x2="542.9" y2="34"/>
+        <line class="lead" x1="619" y1="88" x2="619" y2="118"/>
+        <circle class="dot" cx="146.7" cy="80" r="4"/>
+        <circle class="dot" cx="421" cy="80" r="4"/>
+        <circle class="dot ceil" cx="542.9" cy="80" r="5.5"/>
+        <circle class="dot target" cx="619" cy="80" r="5.5"/>
+        <text x="146.7" y="50" text-anchor="middle">naive start 37</text>
+        <text x="421" y="50" text-anchor="middle">realistic solver 55</text>
+        <text class="ceil-label" x="542.9" y="26" text-anchor="middle">certified ceiling 63</text>
+        <text x="619" y="134" text-anchor="middle">proposed target 68</text>
+        <text class="tick" x="680" y="50" text-anchor="end">72 rows in table</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 2.</b> Correct rows for the example table. The axis starts at 30. The thick segment is the part of the target the certificate rules out.</figcaption>
+  </figure>
+  <p>The certificate proves less than the truth. It shows 63 is the limit, while the reference solver reaches 55. The difference is rows a solver could only get right by memorizing them.</p>
+
+  <h2><span class="n">6</span>Narrower certificates for realistic features</h2>
+  <p>In the stress variant one visible column is nearly unique, like a dollar amount. No two rows match on everything, so nothing can be certified for every solver: 0 of 20, although the targets are just as unreachable.</p>
+  <p>The post meets the same wall. Counting only identical inputs puts its antibody ceiling near 0.999, and its adopted figure comes from restricting attention to four features. A certificate can take the same step. The auditor declares the columns it matched on, and the checker reports a narrower result: no rule that uses only those columns reaches the target. In the loan example with a requested-amount column added, matching on the three original columns gives 63 again.</p>
+  <figure>
+    <figcaption><b>Table 3.</b> Two auditors that declare a subset of columns. Every entry passed the checker. The core set has 60 supported tasks, where any refutation is misleading.</figcaption>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Auditor</th><th class="num">Stress set: targets refuted</th><th class="num">Core set: supported targets "refuted"</th></tr></thead>
+        <tbody>
+          <tr><td>Drops near-unique columns</td><td class="num">20 of 20</td><td class="num">0 of 60</td></tr>
+          <tr class="mark"><td>Always drops the last visible column</td><td class="num">20 of 20</td><td class="num">28 of 60</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>The second auditor never looks at what it drops, and on 28 supported tasks the column it dropped carried the signal. Its claims are true as worded and wrong as conclusions. The checker states the scope of a claim and keeps narrower results out of the certified count. It cannot judge the choice of columns. That judgment stays with a reviewer, as it does in the post.</p>
+
+  <h2><span class="n">7</span>Limitations</h2>
+  <ul>
+    <li><strong>A script is the best auditor here.</strong> The first row of Table 2 is a group-by a few lines long. On clean tables a language model adds nothing to it. The contribution is the certificate format and its checker.</li>
+    <li><strong>Narrower certificates need a reviewer.</strong> Only a claim about every solver is safe to accept unread. Table 3 shows a careless choice of columns passing the checker.</li>
+    <li><strong>The bound refutes a target and does not replace it.</strong> Figure 2 shows the gap between what is provable and what is realistic.</li>
+    <li><strong>Target size leaks a little.</strong> The best rule that looks only at surface features, such as how large the target is, reaches 70% accuracy where always guessing the majority reaches 60%.</li>
+    <li><strong>Accuracy only.</strong> The count is exact for accuracy. The post applies its grouping to a pairwise F1 score, and another of its cases uses average precision. Certificates for those metrics are not worked out here.</li>
+    <li><strong>Small and synthetic.</strong> Twenty scenarios, five rules, one author.</li>
+  </ul>
+
+  <h2><span class="n">8</span>An earlier version that failed</h2>
+  <p>The first version used short text tasks. An auditor had to give two readings of the documents that led to different answers. Before any model was run, a regular expression was tried against it. It labelled all 80 tasks correctly and produced a valid pair of readings for each. A benchmark that string matching solves cannot compare auditors.</p>
+  <p>That version stays in the repository with the result pinned as a test, and the second version measures shortcut baselines before anything else.</p>
+
+  <h2><span class="n">9</span>An experiment that has not been run</h2>
+  <p>The repository includes prompts and a scorer for one comparison: ask a model for a verdict alone, or ask it for a verdict plus a certificate. In the second condition only certified claims count, so false alarms are zero by construction.</p>
+  <p>The open questions are how often the verdict-only condition raises a false alarm on the hard negatives, and how much recall the certificate requirement costs. If the verdict-only condition raises none, certificates buy nothing on this benchmark. That run is not scheduled.</p>
+
+  <h2><span class="n">10</span>Reproducing the results</h2>
+  <p>Python 3.9 or later, standard library only. Code and data are in the repository.<sup class="ref"><a href="#ref-2">[2]</a></sup></p>
+  <pre>python3 -m unittest discover -s tests
+python3 ceiling.py demo
+python3 ceiling.py control --split all</pre>
+
+  <h2>References</h2>
+  <ol class="refs">
+    <li id="ref-1"><span>[1]</span><span>Abundant Research Team. "How we set realistic targets for research tasks." November 16, 2026. <a href="https://www.abundant.ai/blog/realistic-targets/">abundant.ai/blog/realistic-targets</a></span></li>
+    <li id="ref-2"><span>[2]</span><span>Code, data and tests for this note. <a href="https://github.com/JamieXW/evidence-audit">github.com/JamieXW/evidence-audit</a></span></li>
+  </ol>
+
+  <footer>
+    <p>Independent project. Not affiliated with or endorsed by Abundant. All data is synthetic.</p>
+    <p>Built with help from Claude, an AI model made by Anthropic.</p>
+  </footer>
+</article>

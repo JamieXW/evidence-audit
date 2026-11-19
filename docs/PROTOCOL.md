@@ -17,6 +17,9 @@ give a more trustworthy result than asking for a verdict?
   cannot list valid row groups loses recall the baseline keeps.
 - **Secondary:** invalid-group rate, certificate tightness, and the error of the
   baseline's `ceiling_correct` estimate.
+- **Reported apart:** restricted certificates, where the model declares a subset of
+  columns. They never count as certified refutations. Report how many refute a
+  supported target and how many drop a column that carried signal.
 
 The hypothesis can fail three ways: the baseline has no false alarms, certified recall
 is far below baseline recall, or both conditions sit at ceiling.
@@ -39,8 +42,8 @@ is where the group-by baseline becomes the fair comparison.
 
 ## Size of a run
 
-All 120 tasks, both conditions, one repeat: about 667,000 characters of prompt.
-Three repeats: about 2.0 million characters. Table-heavy JSON tokenizes at roughly
+All 120 tasks, both conditions, one repeat: about 693,000 characters of prompt.
+Three repeats: about 2.1 million characters. Table-heavy JSON tokenizes at roughly
 3 characters per token, so expect in the region of 0.7 million input tokens, plus
 output that is small for the baseline and a few hundred tokens per task for
 certificates. A development-only run is 60% of that. Price this against the chosen
@@ -82,8 +85,9 @@ high-cardinality features; that rescaling rewards improves training.
 
 ## Follow-ups, in order of value
 
-1. Near-collision certificates for the stress variant, with the added assumption
-   stated explicitly and reviewed by a person.
+1. A way to review restricted certificates. They are implemented and checked, but
+   the choice of columns is unreviewed; measure how often a model's declared subset
+   drops a column that carried signal (`restrictions_that_cut_signal`).
 2. Ceilings for ranking and pairwise metrics.
 3. Tasks where the visible/withheld split is described in prose, so the auditor has
    to work out what the agent sees. This is where a model, not a script, is needed.

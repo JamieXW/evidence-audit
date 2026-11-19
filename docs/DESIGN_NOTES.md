@@ -43,6 +43,19 @@ The certificate bounds the exact ceiling, because that is the only one provable 
 the table alone. The gap between them is the method's honest limit, and the `sparse`
 variant is built to make that gap total.
 
+## Why restricted certificates are kept separate
+
+Matching on fewer columns proves a true but narrower statement: no rule using only
+those columns reaches the target. It says nothing about a solver that uses the
+dropped columns. If a dropped column carries signal, the statement is true and the
+conclusion people draw from it is false.
+
+So the checker labels every result with its scope, and the scorer never adds a
+restricted result to the certified count. The ground truth for "did the restriction
+matter" is whether the restricted bound falls below what the reference solver
+actually scores. Two reference auditors show both outcomes: one drops only
+near-unique columns and is always harmless here; one drops a column blindly and is not.
+
 ## Why these variants
 
 - `irrelevant` and `redundant` exist to punish the lazy rule "something is hidden,
@@ -69,8 +82,11 @@ audit verdicts can be confidently wrong, and a certificate format makes the wron
 harmless. Whether models produce wrong verdicts here is the experiment not yet run.
 
 **"Real features are continuous. You will never see exact collisions."**
-Correct, and the stress variant measures it: 0 of 20 certified. The next step is
-near-collisions, which trade proof for an explicit assumption a reviewer can reject.
+Correct, and the stress variant measures it: 0 of 20 certified for every solver. The
+post meets the same wall and answers it by restricting to a set of features.
+Restricted certificates do the same and recover all 20, as a narrower claim. The
+checker cannot say whether the dropped column mattered; an auditor that drops one
+blindly "refutes" 28 of 60 supported targets. That judgment needs a reviewer.
 
 **"Your bound is too generous."**
 Yes. It refutes targets; it does not set them. A refuted target still needs the kind

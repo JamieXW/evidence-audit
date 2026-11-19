@@ -7,6 +7,11 @@ This is a small synthetic benchmark and a certificate checker, built on the idea
 Abundant's [realistic targets post](https://www.abundant.ai/blog/realistic-targets/).
 It is an independent project, not affiliated with Abundant. No Leader Lane data is used.
 
+The counting argument is the post's own: in its second case study, cases with identical
+inputs are grouped and the majority answer gives the best achievable score. What this
+project adds is a certificate format, a checker that stays correct when the certificate
+is wrong or incomplete, and a benchmark with hard negatives.
+
 **No model experiment has been run. No research efficacy claim is made.** Every number
 below comes from deterministic reference auditors with no LLM involved.
 
@@ -46,6 +51,11 @@ from another group. It then counts the errors those rows force.
 - **No hand-written model.** The check runs against the table itself. v0.1 needed a
   formal spec written alongside the prose; this does not.
 - **One-sided.** It can refute a target. It cannot confirm one.
+
+A certificate may declare a subset of the visible columns to match on. The checker
+then reports the result as `restricted`: it limits rules that use only those columns,
+and it is never counted as a refutation for every solver. Declaring a withheld column
+voids the certificate.
 
 The bound covers deterministic predictors that depend only on the agent-visible
 columns. A randomized predictor obeys it in expectation, not on every draw. Row ids
@@ -94,24 +104,39 @@ labels; what it must not see is the answer to the audit.
 The sloppy auditor is the point of the design: it raises false alarms on 47% of
 supported tasks, 98% of its groups are rejected, and it certifies nothing false.
 
+Restricted certificates, where the auditor declares the columns it matched on:
+
+| Auditor | Stress set: targets refuted | Core set: supported targets "refuted" |
+|---|---|---|
+| drops near-unique columns | 20 of 20 | 0 of 60 |
+| always drops the last visible column | 20 of 20 | 28 of 60 |
+
+Both rows pass the checker. The second is misleading on 28 tasks where the dropped
+column carried signal. The checker reports the scope of a claim; it cannot judge the
+choice of columns.
+
 ## Known weaknesses
 
 1. **A short script is the strongest auditor here.** `exhaustive` is a group-by and it
    scores perfectly on the core set. On clean tables an LLM adds nothing over it. The
    contribution is the certificate format and checker, not a claim that a model is needed.
-2. **Exact collisions fail on realistic features.** In the `sparse` stress variant one
-   near-unique visible column leaves no two rows identical. Every reference auditor
-   certifies 0 of 20, although the target is just as unreachable. Real data looks like
-   this. Handling it needs near-collisions, which require an assumption about which
-   features matter and are no longer a proof.
+2. **Realistic features defeat the strong claim, and the weaker claim needs a reviewer.**
+   In the `sparse` stress variant one near-unique visible column leaves no two rows
+   identical. Nothing can be certified for every solver: 0 of 20, although the target
+   is just as unreachable. Real data looks like this. The post meets the same wall:
+   counting only identical inputs puts its antibody ceiling near 0.999, and its adopted
+   figure comes from restricting to four features. Restricted certificates take the
+   same step and recover all 20, but only as a claim about rules using the declared
+   columns. A careless choice of columns passes the checker and misleads (table above).
 3. **The bound is loose even when it works.** In the example above the certificate
    proves 63; the reference solver reaches 55. The gap is rows a lookup table could
    memorize. The certificate refutes a target; it does not estimate the right one.
 4. **Target size is a mild tell.** The best single-threshold rule on surface features
    reaches 0.70 against a 0.60 majority rate (`python3 ceiling.py shortcuts --split all`),
    because inflated targets run slightly high. A test fails if any shortcut exceeds 0.70.
-5. **Accuracy only.** The post's cases use average precision and pairwise F1, where the
-   forced-error argument does not carry over directly.
+5. **Accuracy only.** The forced-error count is exact for accuracy. The post applies its
+   grouping to a pairwise F1 score, and another of its cases uses average precision.
+   Certificates for those metrics are not worked out here.
 6. **Small and synthetic.** 20 scenarios, 5 rule families, 2 held-out families.
    One author wrote every rule.
 
@@ -140,7 +165,8 @@ python3 ceiling.py evaluate --split dev --predictions runs/predictions.jsonl
 
 A prediction is one JSON object per line with `id`, `verdict` (`supported`,
 `unsupported`, `uncertain`), optional integer `ceiling_correct`, and, for the
-certificate condition, `groups`. Score each repeat as its own file.
+certificate condition, `groups` and optionally `columns` (the subset matched on).
+Score each repeat as its own file.
 
 ## Next
 

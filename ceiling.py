@@ -41,10 +41,10 @@ FAMILIES = [
 
 # ---------------------------------------------------------------- certificates
 
-def table(task):
-    """row id -> (values of the columns the agent sees, label)."""
+def table(task, columns=None):
+    """row id -> (values of the matching columns, label). Default: all the agent sees."""
     cols = task["columns"]
-    seen = [cols.index(c) for c in task["agent_sees"]]
+    seen = [cols.index(c) for c in (task["agent_sees"] if columns is None else columns)]
     label = cols.index(task["label"])
     return {r[0]: (tuple(r[i] for i in seen), r[label]) for r in task["rows"]}
 
@@ -57,15 +57,29 @@ def forced_errors(pairs):
     return sum(sum(c.values()) - max(c.values()) for c in groups.values())
 
 
-def check_certificate(task, groups):
+def check_certificate(task, groups, columns=None):
     """Check claimed collisions against the table. Sound for any input.
 
     A group counts only if it lists at least two distinct known rows that are
-    identical on every agent-visible column, carry at least two different
-    labels, and reuse no row from an earlier group. Rows from valid groups are
-    pooled; dropping rows can only loosen the bound, never make it wrong.
+    identical on every matching column, carry at least two different labels,
+    and reuse no row from an earlier group. Rows from valid groups are pooled;
+    dropping rows can only loosen the bound, never make it wrong.
+
+    `columns` declares what the groups match on. Left out, or naming every
+    agent-visible column, the bound holds for any solver ("any_solver"). A
+    proper subset gives a bound only for rules that use just those columns
+    ("restricted"): true as stated, but silent on whether the dropped columns
+    carry signal. Anything else, including a withheld column, voids the certificate.
     """
-    rows = table(task)
+    sees = task["agent_sees"]
+    if columns is None:
+        columns = sees
+    if not (isinstance(columns, list) and columns and all(type(c) is str for c in columns)
+            and len(set(columns)) == len(columns) and set(columns) <= set(sees)):
+        return {"scope": None, "columns": None, "valid_groups": 0,
+                "invalid_groups": len(groups) if isinstance(groups, list) else 1,
+                "forced_errors": 0, "ceiling_bound": task["n_rows"], "refutes_target": False}
+    rows = table(task, columns)
     used, valid, invalid = set(), 0, 0
     for group in groups if isinstance(groups, list) else [None]:
         ok = (isinstance(group, list) and len(group) >= 2
@@ -80,8 +94,10 @@ def check_certificate(task, groups):
             invalid += 1
     forced = forced_errors(rows[i] for i in used)
     bound = len(rows) - forced
-    return {"valid_groups": valid, "invalid_groups": invalid, "forced_errors": forced,
-            "ceiling_bound": bound, "refutes_target": bound < task["target_correct"]}
+    return {"scope": "any_solver" if set(columns) == set(sees) else "restricted",
+            "columns": list(columns), "valid_groups": valid, "invalid_groups": invalid,
+            "forced_errors": forced, "ceiling_bound": bound,
+            "refutes_target": bound < task["target_correct"]}
 
 
 def reward_scale(task, ceiling):
@@ -93,21 +109,19 @@ def reward_scale(task, ceiling):
 
 # ---------------------------------------------------- reference auditors (no LLM)
 
-def collisions(task, key_columns=None):
-    rows = table(task)
-    cols = task["columns"]
-    index = None if key_columns is None else [cols.index(c) for c in key_columns]
-    raw = {r[0]: r for r in task["rows"]}
+def collisions(task, columns=None):
+    rows = table(task, columns)
     by_key = defaultdict(list)
     for row_id, (key, _) in rows.items():
-        by_key[key if index is None else tuple(raw[row_id][i] for i in index)].append(row_id)
+        by_key[key].append(row_id)
     return [ids for ids in by_key.values() if len({rows[i][1] for i in ids}) > 1]
 
 
-def audit_with(task, groups):
-    cert = check_certificate(task, groups)
-    return {"id": task["id"], "verdict": "unsupported" if cert["refutes_target"] else "supported",
-            "ceiling_correct": cert["ceiling_bound"], "groups": groups}
+def audit_with(task, groups, columns=None):
+    cert = check_certificate(task, groups, columns)
+    result = {"id": task["id"], "verdict": "unsupported" if cert["refutes_target"] else "supported",
+              "ceiling_correct": cert["ceiling_bound"], "groups": groups}
+    return result if columns is None else {**result, "columns": columns}
 
 
 def exhaustive(task):
@@ -135,10 +149,26 @@ def sloppy(task):
             "ceiling_correct": claimed, "groups": groups}
 
 
+def subset_near_unique(task):
+    """Declares a subset: drops visible columns where most rows hold their own value."""
+    cols = task["columns"]
+    keep = [c for c in task["agent_sees"]
+            if len({r[cols.index(c)] for r in task["rows"]}) <= task["n_rows"] // 2]
+    return audit_with(task, collisions(task, keep) if keep else [], keep)
+
+
+def subset_careless(task):
+    """Declares a subset without checking it: always drops the last visible column."""
+    keep = task["agent_sees"][:-1]
+    return audit_with(task, collisions(task, keep), keep)
+
+
 CONTROLS = {
     "exhaustive": exhaustive,
     "lazy": lazy,
     "sloppy": sloppy,
+    "subset_near_unique": subset_near_unique,
+    "subset_careless": subset_careless,
     "trusting": lambda t: {"id": t["id"], "verdict": "supported", "groups": []},
     "alarmist": lambda t: {"id": t["id"], "verdict": "unsupported", "groups": []},
     "withheld_column_shortcut": lambda t: {
@@ -224,6 +254,9 @@ Also return groups: a list of lists of row ids. Within a group every row must ha
 identical values in all agent_sees columns, and the group must contain at least two
 different labels. A row may appear in at most one group. Groups are checked by a
 program against the table; only groups that pass count as evidence.
+You may instead match on fewer columns by returning columns: a list drawn from
+agent_sees. Groups are then checked on those columns only, and the result limits
+only rules that use just those columns, not every solver.
 """
 
 
@@ -240,11 +273,16 @@ def summarize(rows):
         c["correct"] += r["verdict"] == r["label"]
         c["true_positive"] += positive and flagged
         c["false_positive"] += not positive and flagged
-        c["certified_refutation"] += positive and r["refutes_target"]
-        c["false_certified_refutation"] += not positive and r["refutes_target"]
+        full, narrow = r["scope"] == "any_solver", r["scope"] == "restricted"
+        c["certified_refutation"] += positive and full and r["refutes_target"]
+        c["false_certified_refutation"] += not positive and full and r["refutes_target"]
+        c["restricted_refutation"] += positive and narrow and r["refutes_target"]
+        c["restricted_refutation_on_supported"] += not positive and narrow and r["refutes_target"]
+        # A restricted bound below the reference solver means the dropped columns mattered.
+        c["restriction_cut_signal"] += narrow and r["ceiling_bound"] < r["reference_solver_correct"]
         c["valid_groups"] += r["valid_groups"]
         c["invalid_groups"] += r["invalid_groups"]
-        c["forced_errors_certified"] += r["forced_errors"]
+        c["forced_errors_certified"] += r["forced_errors"] if full else 0
         c["forced_errors_exhaustive"] += r["forced_errors_exhaustive"]
 
     def ratio(n, d):
@@ -258,6 +296,9 @@ def summarize(rows):
         "certified_recall": ratio("certified_refutation", "positive"),
         "certified_recall_where_certifiable": ratio("certified_refutation", "certifiable_positive"),
         "false_certified_refutations": c["false_certified_refutation"],
+        "restricted_recall": ratio("restricted_refutation", "positive"),
+        "restricted_refutations_on_supported": c["restricted_refutation_on_supported"],
+        "restrictions_that_cut_signal": c["restriction_cut_signal"],
         "invalid_group_rate": round(c["invalid_groups"] / (c["valid_groups"] + c["invalid_groups"]), 4)
         if c["valid_groups"] + c["invalid_groups"] else None,
         "certificate_tightness": ratio("forced_errors_certified", "forced_errors_exhaustive"),
@@ -279,7 +320,7 @@ def evaluate(tasks, keys, predictions):
         verdict = pred.get("verdict", "missing")
         if verdict not in ("supported", "unsupported", "uncertain", "missing"):
             verdict = "invalid"
-        cert = check_certificate(task, pred.get("groups", []))
+        cert = check_certificate(task, pred.get("groups", []), pred.get("columns"))
         details.append({**key, "verdict": verdict, **cert,
                         "ceiling_estimate": pred.get("ceiling_correct"),
                         "forced_errors_exhaustive": task["n_rows"] - key["exact_ceiling_correct"],

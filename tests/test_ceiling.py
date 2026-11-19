@@ -121,6 +121,53 @@ class CeilingTests(unittest.TestCase):
         self.assertEqual(core['false_certified_refutations'], 0)
         self.assertLess(core['certificate_tightness'], 0.5)
 
+    def test_bad_column_declarations_void_the_certificate(self):
+        task, _ = self.pick('withheld')
+        groups = collisions(task)
+        sees, hidden = task['agent_sees'], task['withheld_from_agent'][0]
+        for bad in ([], 'income_band', [sees[0], sees[0]], sees + [hidden], [hidden], [1], ['nope']):
+            cert = check_certificate(task, groups, bad)
+            self.assertEqual((cert['scope'], cert['forced_errors'], cert['refutes_target']),
+                             (None, 0, False), bad)
+
+    def test_scope_follows_declared_columns(self):
+        task, _ = self.pick('withheld')
+        sees = task['agent_sees']
+        self.assertEqual(check_certificate(task, collisions(task))['scope'], 'any_solver')
+        self.assertEqual(check_certificate(task, collisions(task), sees[::-1])['scope'], 'any_solver')
+        narrow = check_certificate(task, collisions(task, sees[:2]), sees[:2])
+        self.assertEqual(narrow['scope'], 'restricted')
+        # Groups matched on fewer columns are not evidence about every solver.
+        self.assertEqual(check_certificate(task, collisions(task, sees[:2]))['valid_groups'], 0)
+
+    def test_restricted_bound_on_sparse_equals_withheld_ceiling(self):
+        by_scenario = {(k['scenario'], k['variant']): k for k in self.keys}
+        for (scenario, variant), key in by_scenario.items():
+            if variant != 'sparse':
+                continue
+            task = self.by_task[key['id']]
+            bands = task['agent_sees'][:3]
+            cert = check_certificate(task, collisions(task, bands), bands)
+            self.assertEqual(cert['scope'], 'restricted')
+            self.assertEqual(cert['ceiling_bound'],
+                             by_scenario[(scenario, 'withheld')]['exact_ceiling_correct'])
+
+    def test_informed_subset_recovers_the_stress_set(self):
+        result = self.run_control('subset_near_unique')
+        core, stress = result['core']['metrics'], result['stress']['metrics']
+        self.assertEqual(core['certified_recall'], 1)
+        self.assertEqual(core['restricted_refutations_on_supported'], 0)
+        self.assertEqual(stress['certified_recall'], 0)
+        self.assertEqual(stress['restricted_recall'], 1)
+        self.assertEqual(stress['restrictions_that_cut_signal'], 0)
+
+    def test_careless_subset_misleads_but_is_never_certified_for_all_solvers(self):
+        core = self.run_control('subset_careless')['core']['metrics']
+        self.assertEqual(core['false_certified_refutations'], 0)
+        self.assertEqual(core['certified_recall'], 0)
+        self.assertGreater(core['restricted_refutations_on_supported'], 0)
+        self.assertGreater(core['restrictions_that_cut_signal'], 0)
+
     def test_surface_shortcuts_stay_near_majority(self):
         result = shortcuts(self.tasks, self.keys)
         majority = result.pop('majority_rate')
