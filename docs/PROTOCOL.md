@@ -85,9 +85,10 @@ high-cardinality features; that rescaling rewards improves training.
 
 ## Follow-ups, in order of value
 
-1. A way to review restricted certificates. They are implemented and checked, but
-   the choice of columns is unreviewed; measure how often a model's declared subset
-   drops a column that carried signal (`restrictions_that_cut_signal`).
+1. Restricted certificates now get a statistical check on the dropped columns
+   (`signal_check`, using the practice rows). Give a model the practice rows too, and
+   measure how often its declared subset drops a column that carried signal
+   (`restrictions_that_cut_signal`) and how often the check catches it.
 2. Ceilings for ranking and pairwise metrics.
 3. Tasks where the visible/withheld split is described in prose, so the auditor has
    to work out what the agent sees. This is where a model, not a script, is needed.

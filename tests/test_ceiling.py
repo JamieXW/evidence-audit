@@ -1,9 +1,11 @@
+import copy
 import itertools
 import random
 import unittest
 
-from ceiling import (CONTROLS, CORE, STRESS, build, check_certificate, collisions, evaluate,
-                     exhaustive, forced_errors, shortcuts, table)
+from ceiling import (CONTROLS, CORE, N_PRACTICE, STRESS, build, build_practice,
+                     check_certificate, collisions, evaluate, exhaustive, forced_errors,
+                     shortcuts, signal_check, table)
 
 
 class CeilingTests(unittest.TestCase):
@@ -185,6 +187,87 @@ class CeilingTests(unittest.TestCase):
             evaluate(self.tasks, self.keys, [p, p])
         with self.assertRaises(ValueError):
             evaluate(self.tasks, self.keys, [{'id': 'unknown'}])
+
+
+class SignalCheckTests(unittest.TestCase):
+    """Task: does a restricted certificate's dropped column carry signal?"""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tasks, cls.keys = build()
+        cls.by_task = {t['id']: t for t in cls.tasks}
+        cls.practice = build_practice()
+
+        def scored(name):
+            preds = [CONTROLS[name](t) for t in cls.tasks]
+            return evaluate(cls.tasks, cls.keys, preds, cls.practice)
+        cls.careless = scored('subset_careless')
+        cls.near_unique = scored('subset_near_unique')
+
+    def test_practice_matches_tasks_and_is_reproducible(self):
+        self.assertEqual(self.practice, build_practice())
+        self.assertEqual(set(self.practice), set(self.by_task))
+        for task_id, prac in self.practice.items():
+            self.assertEqual(prac['columns'], self.by_task[task_id]['columns'])
+            self.assertEqual(len(prac['rows']), N_PRACTICE)
+
+    def test_practice_rows_differ_from_evaluation_rows(self):
+        for task_id, prac in self.practice.items():
+            hidden = {tuple(r[1:]) for r in self.by_task[task_id]['rows']}
+            practice = [tuple(r[1:]) for r in prac['rows']]
+            # Coarse features repeat, so overlap is expected; the tables must not be copies.
+            self.assertLess(sum(r in hidden for r in practice), N_PRACTICE)
+
+    def test_check_needs_a_proper_subset(self):
+        task = self.tasks[0]
+        prac = self.practice[task['id']]
+        sees = task['agent_sees']
+        for keep in (None, [], sees, list(reversed(sees)), sees + ['nope'], 'x'):
+            self.assertIsNone(signal_check(task, prac, keep), keep)
+
+    def test_check_is_deterministic(self):
+        task = next(t for t in self.tasks if t['withheld_from_agent'])
+        prac = self.practice[task['id']]
+        keep = task['agent_sees'][:2]
+        self.assertEqual(signal_check(task, prac, keep), signal_check(task, prac, keep))
+
+    def test_flags_careless_misleading_refutations(self):
+        core = self.careless['core']['metrics']
+        flagged, total = map(int, core['misleading_restricted_refutations_flagged'].split(' of '))
+        self.assertEqual(total, 28)
+        self.assertGreaterEqual(flagged, 25)
+        self.assertEqual(core['promoted_refutations_on_supported'], 0)
+        self.assertLessEqual(core['signal_flags_where_not_cut'], 3)
+
+    def test_passes_near_unique_subsets(self):
+        stress = self.near_unique['stress']['metrics']
+        self.assertEqual(stress['restrictions_checked'], 20)
+        self.assertEqual(stress['signal_flags_where_not_cut'], 0)
+        self.assertEqual(stress['promoted_recall'], 1)
+
+    def test_promoted_results_are_never_certified_for_every_solver(self):
+        for result in (self.careless, self.near_unique):
+            for part in ('core', 'stress'):
+                self.assertEqual(result[part]['metrics']['false_certified_refutations'], 0)
+        self.assertEqual(self.near_unique['stress']['metrics']['certified_recall'], 0)
+
+    def test_noise_column_is_rarely_flagged(self):
+        flags = checked = 0
+        for key in self.keys:
+            if key['variant'] not in CORE:
+                continue
+            task = copy.deepcopy(self.by_task[key['id']])
+            prac = copy.deepcopy(self.practice[key['id']])
+            rng = random.Random('noise/' + key['id'])
+            for tab in (task, prac):
+                tab['columns'] = tab['columns'][:1] + ['noise'] + tab['columns'][1:]
+                tab['rows'] = [r[:1] + [rng.randrange(2)] + r[1:] for r in tab['rows']]
+            keep = list(task['agent_sees'])
+            task['agent_sees'] = ['noise'] + keep
+            flags += signal_check(task, prac, keep)['signal_detected']
+            checked += 1
+        self.assertEqual(checked, 100)
+        self.assertLessEqual(flags, 10)
 
 
 if __name__ == '__main__':

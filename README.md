@@ -112,8 +112,31 @@ Restricted certificates, where the auditor declares the columns it matched on:
 | always drops the last visible column | 20 of 20 | 28 of 60 |
 
 Both rows pass the checker. The second is misleading on 28 tasks where the dropped
-column carried signal. The checker reports the scope of a claim; it cannot judge the
-choice of columns.
+column carried signal. The checker alone reports the scope of a claim; it cannot judge
+the choice of columns.
+
+### Testing what a restriction dropped
+
+Each task also has 144 labelled practice rows from the same generator
+(`data/v02/practice/`), standing in for the training data a solver would get. For a
+restricted certificate, `signal_check` fits two lookup learners on the practice rows,
+one on the kept columns and one on all visible columns, and scores both on the 72
+evaluation rows. A permutation test, shuffling the dropped columns among practice rows
+that share kept values, gives a p-value for the gain.
+
+If no signal is detected, the certificate is promoted: its bound becomes the restricted
+ceiling plus an approximate 95% upper bound on the dropped columns' gain. A promoted
+result is statistical and specific to this learner and this much data. It is never
+counted as a refutation for every solver.
+
+| Auditor | Misleading refutations flagged | False flags where nothing was cut | Promoted refutations of supported targets | Stress targets refuted after promotion |
+|---|---|---|---|---|
+| always drops the last visible column | 27 of 28 | 0 of 64 | 0 | 20 of 20 |
+| drops near-unique columns | none to flag | 0 of 20 | 0 | 20 of 20 |
+
+The one unflagged case has p = 0.065 and a gain of 3 rows. Its promoted bound adds
+the uncertainty on that gain and stays above the target, so it refutes nothing. When
+the dropped column is pure noise, the test flags 1 of 100 core tasks.
 
 ## Known weaknesses
 
