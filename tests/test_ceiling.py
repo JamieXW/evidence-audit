@@ -1,14 +1,16 @@
 import copy
 import itertools
+import math
 import random
 import unittest
-
+from collections import Counter
 from fractions import Fraction
 
 from ceiling import (CONTROLS, CORE, N_PRACTICE, STRESS, best_pairwise_f1, build,
                      build_practice, check_certificate, check_f1_certificate, choose_solver,
                      collisions, evaluate, exhaustive, forced_errors, interval,
-                     interval_report, shortcuts, signal_check, table, toy_clonal_task)
+                     interval_report, luck_bound, randomised_solver, shortcuts, signal_check,
+                     table, toy_clonal_task, tripwire, tripwire_report)
 
 
 class CeilingTests(unittest.TestCase):
@@ -398,6 +400,85 @@ class IntervalTests(unittest.TestCase):
 
     def test_report_is_deterministic(self):
         self.assertEqual(self.report, interval_report(self.tasks, self.keys, self.practice))
+
+
+def hypergeometric_excess(ones, zeros, m):
+    """Distribution of rows correct minus majority when m random rows get "1"."""
+    size, majority = ones + zeros, max(ones, zeros)
+    dist = Counter()
+    for x in range(max(0, m - zeros), min(m, ones) + 1):
+        prob = Fraction(math.comb(ones, x) * math.comb(zeros, m - x), math.comb(size, m))
+        dist[2 * x + zeros - m - majority] += prob
+    return dist
+
+
+class TripwireTests(unittest.TestCase):
+    """Task: flag scores above the any-solver ceiling, allowing for luck."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tasks, cls.keys = build()
+        cls.by_task = {t['id']: t for t in cls.tasks}
+        cls.practice = build_practice()
+        cls.report = tripwire_report(cls.tasks, cls.keys, cls.practice)
+
+    def count(self, solver, variants, status):
+        return sum(self.report.get(f'{solver}/{v}', {}).get(status, 0) for v in variants)
+
+    def test_honest_solver_never_trips(self):
+        self.assertEqual(self.count('honest', CORE + STRESS, 'within_ceiling'), 120)
+
+    def test_copying_labels_always_alarms_below_a_perfect_ceiling(self):
+        self.assertEqual(self.count('copies_labels', CORE, 'alarm'), 100)
+        # With a near-unique visible column the ceiling is 72, so nothing can exceed it.
+        self.assertEqual(self.count('copies_labels', STRESS, 'within_ceiling'), 20)
+
+    def test_randomised_solver_does_not_alarm(self):
+        for key in self.keys:
+            if key['variant'] not in CORE:
+                continue
+            task = self.by_task[key['id']]
+            for seed in range(10):
+                preds = randomised_solver(task, self.practice[key['id']], f'test/{seed}')
+                self.assertNotEqual(tripwire(task, predictions=preds)['status'], 'alarm')
+
+    def test_beating_the_ceiling_requires_inconsistent_answers(self):
+        for key in self.keys:
+            task = self.by_task[key['id']]
+            preds = {r[0]: r[-1] for r in task['rows']}
+            result = tripwire(task, predictions=preds)
+            if result['excess'] > 0:
+                self.assertGreater(result['groups_answered_inconsistently'], 0)
+
+    def test_luck_bound_covers_every_strategy_on_small_cases(self):
+        rng = random.Random(9)
+        for _ in range(40):
+            groups = [(rng.randrange(1, 4), rng.randrange(1, 4)) for _ in range(rng.randrange(1, 4))]
+            rows, rid = [], 0
+            for g, (ones, zeros) in enumerate(groups):
+                for label in [1] * ones + [0] * zeros:
+                    rows.append([rid, g, label])
+                    rid += 1
+            task = {'columns': ['row', 'v', 'y'], 'agent_sees': ['v'], 'label': 'y', 'rows': rows}
+            for k in range(1, 4):
+                worst = Fraction(0)
+                for ms in itertools.product(*(range(a + b + 1) for a, b in groups)):
+                    total = Counter({0: Fraction(1)})
+                    for (a, b), m in zip(groups, ms):
+                        step = Counter()
+                        for s, p in total.items():
+                            for e, q in hypergeometric_excess(a, b, m).items():
+                                step[s + e] += p * q
+                        total = step
+                    worst = max(worst, sum(p for s, p in total.items() if s >= k))
+                self.assertGreaterEqual(luck_bound(task, k) + 1e-12, float(worst), (groups, k))
+
+    def test_invalid_submissions(self):
+        task = self.tasks[0]
+        self.assertEqual(tripwire(task, score=task['n_rows'] + 1)['status'], 'invalid')
+        self.assertEqual(tripwire(task, score=True)['status'], 'invalid')
+        self.assertEqual(tripwire(task, predictions={0: 1})['status'], 'invalid')
+        self.assertEqual(tripwire(task, score=0)['status'], 'within_ceiling')
 
 
 if __name__ == '__main__':

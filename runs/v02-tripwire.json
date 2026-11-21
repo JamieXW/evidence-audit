@@ -1,0 +1,73 @@
+{
+  "notice": "Status counts per reference solver and variant. Alarm means the chance of beating the ceiling by luck is below 1%.",
+  "results": {
+    "copies_labels/complete": {
+      "alarm": 20
+    },
+    "copies_labels/irrelevant": {
+      "alarm": 20
+    },
+    "copies_labels/optimistic": {
+      "alarm": 20
+    },
+    "copies_labels/redundant": {
+      "alarm": 20
+    },
+    "copies_labels/sparse": {
+      "within_ceiling": 20
+    },
+    "copies_labels/withheld": {
+      "alarm": 20
+    },
+    "honest/complete": {
+      "within_ceiling": 20
+    },
+    "honest/irrelevant": {
+      "within_ceiling": 20
+    },
+    "honest/optimistic": {
+      "within_ceiling": 20
+    },
+    "honest/redundant": {
+      "within_ceiling": 20
+    },
+    "honest/sparse": {
+      "within_ceiling": 20
+    },
+    "honest/withheld": {
+      "within_ceiling": 20
+    },
+    "randomises_close_calls/complete": {
+      "within_ceiling": 20
+    },
+    "randomises_close_calls/irrelevant": {
+      "within_ceiling": 20
+    },
+    "randomises_close_calls/optimistic": {
+      "within_ceiling": 20
+    },
+    "randomises_close_calls/redundant": {
+      "within_ceiling": 20
+    },
+    "randomises_close_calls/sparse": {
+      "within_ceiling": 20
+    },
+    "randomises_close_calls/withheld": {
+      "within_ceiling": 20
+    },
+    "uses_withheld_column/irrelevant": {
+      "within_ceiling": 20
+    },
+    "uses_withheld_column/redundant": {
+      "within_ceiling": 20
+    },
+    "uses_withheld_column/sparse": {
+      "within_ceiling": 20
+    },
+    "uses_withheld_column/withheld": {
+      "above_ceiling_luck_plausible": 11,
+      "within_ceiling": 4,
+      "alarm": 5
+    }
+  }
+}

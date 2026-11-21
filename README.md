@@ -170,6 +170,32 @@ the reference by -7 to +10 rows, because a single 72-row draw is noisy. In the w
 example (loan-0, `withheld`) the floor is 59, not the reference's 55, so the interval is
 [59, 63] around a target of 68. Truth labels still come from the reference solver.
 
+## Tripwire
+
+`tripwire(task, predictions=...)` flags a submitted result above the any-solver ceiling.
+A deterministic solver that uses only the visible columns cannot get there, so a score
+above it means the solver saw something it should not have (a withheld column, the
+labels, a grader leak) or the score is wrong. With predictions, it also counts the
+groups of identical-looking rows that got different answers; beating the ceiling
+requires at least one.
+
+A solver that randomises among identical-looking rows can beat the ceiling by luck. The
+tripwire bounds that chance (a Chernoff bound over every way of answering each group,
+checked against exact enumeration on small cases) and raises an alarm only below 1%.
+
+`python3 ceiling.py tripwire --split all`, core tasks:
+
+| Solver | Within ceiling | Above, luck plausible | Alarm |
+|---|---|---|---|
+| honest, trained on practice rows | 100 | 0 | 0 |
+| randomises close calls (5,000 runs) | 4,998 | 2 | 0 |
+| copies the labels | 0 | 0 | 100 |
+| uses the withheld column (20 `withheld` tasks) | 4 | 11 | 5 |
+
+The last row is the limit. Leaking the withheld column gains only a few rows, and on 72
+rows the alarm needs an excess of about 6 to 10 rows before luck drops below 1%. On the
+stress set the ceiling is 72, so the tripwire cannot fire at all.
+
 ## Pairwise F1
 
 The post's clonal-grouping case is scored by pairwise F1, not accuracy.
@@ -237,6 +263,7 @@ python3 ceiling.py demo
 python3 ceiling.py control --split all --output runs/v02-reference.json
 python3 ceiling.py shortcuts --split all --output runs/v02-shortcuts.json
 python3 ceiling.py interval --split all --output runs/v02-interval.json
+python3 ceiling.py tripwire --split all --output runs/v02-tripwire.json
 python3 ceiling.py prompts --split dev --mode baseline --output runs/v02-baseline-prompts.jsonl
 python3 ceiling.py prompts --split dev --mode certificate --output runs/v02-certificate-prompts.jsonl
 python3 ceiling.py evaluate --split dev --predictions runs/predictions.jsonl
