@@ -7,6 +7,8 @@ This is a small synthetic benchmark and a certificate checker, built on the idea
 Abundant's [realistic targets post](https://www.abundant.ai/blog/realistic-targets/).
 It is an independent project, not affiliated with Abundant. No Leader Lane data is used.
 
+**Report:** [jamiexw.github.io/evidence-audit](https://jamiexw.github.io/evidence-audit/)
+
 The counting argument is the post's own: in its second case study, cases with identical
 inputs are grouped and the majority answer gives the best achievable score. What this
 project adds is a certificate format, a checker that stays correct when the certificate
