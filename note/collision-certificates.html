@@ -93,27 +93,33 @@ footer p { margin: 0; }
   </header>
 
   <div class="abstract">
-    <p><strong>Abstract.</strong> A benchmark task usually comes with a target: the score a strong solver should be able to reach. If the target depends on information the solver never sees, every reward measured against it is too small. This note describes a small tool that can prove a target is too high. The proof is a list of rows the solver cannot tell apart that have different correct answers. A program checks the list against the data, so a wrong claim cannot pass. On 100 synthetic tasks, a short script finds every provable case and raises no false alarm. On 20 harder tasks built to look more like real data, nothing can be proved about every solver. A narrower proof, limited to rules that use a chosen set of columns, covers all 20, but a reviewer has to accept the choice of columns.</p>
-    <p class="status">Status: pilot on synthetic data. No language model was tested.</p>
+    <p><strong>Abstract.</strong> A benchmark target that depends on information the solver never sees makes every reward too small. Abundant's validation notebooks catch this with analysis that reviewers then audit. This note asks which audit claims a program can check instead. It builds the checker for one type, collisions: cases the solver cannot tell apart that have different answers. The ceiling for every solver turns out to need no auditor, because the checker can compute it. What an auditor adds is a choice of columns to ignore, and that choice can be tested. On a synthetic benchmark, a held-out test flags 27 of 28 misleading column choices with no false flags, and recovers all 20 tasks where exact matching proves nothing. The same machinery gives a pairwise F1 ceiling, a two-sided interval around a target, and a tripwire for scores that should be impossible.</p>
+    <p class="status">Status: pilot on 120 synthetic tasks. No language model was tested.</p>
   </div>
 
   <h2><span class="n">1</span>Motivation and question</h2>
   <p>This project grew out of my work on a business knowledge assistant at Leader Lane, which answers questions from company documents. Some questions cannot be settled by the documents the assistant is given, and a wrong answer alone does not say whether the assistant failed or the question was unanswerable. Abundant's post describes the same problem for research agents. This project is independent of that work and uses no company data.</p>
   <p>Abundant's post on setting realistic targets<sup class="ref"><a href="#ref-1">[1]</a></sup> measures an agent's progress as</p>
   <p class="eq">reward = (score − start) / (target − start)</p>
-  <p>where <em>start</em> is a naive baseline and <em>target</em> is the best score a strong solver could realistically reach. If the target is too high, every reward shrinks by the same factor.</p>
-  <p>In the post's second case study the solver sees only part of each antibody. The validation notebook groups cases that look identical to the solver, takes the majority answer in each group, and counts the errors that no rule could avoid. That counting argument belongs to the post. It is the starting point here, and nothing in this note improves on it.</p>
-  <p>The post also describes three layers of review, each checking the one before. This note looks at one link in that chain. When an auditor, human or model, claims a target is out of reach, can the claim be packaged so that a program checks it and nobody has to trust the auditor?</p>
-  <p>Three things are added:</p>
-  <ul>
-    <li>a certificate format and a checker that stays correct when the certificate is wrong or incomplete;</li>
-    <li>a synthetic benchmark that includes cases where something is hidden but the target is still fine;</li>
-    <li>measurements of where the argument stops working.</li>
-  </ul>
+  <p>where <em>start</em> is a naive baseline and <em>target</em> is the best score a strong solver could realistically reach. If the target is too high, every reward shrinks by the same factor. The post audits each target with a validation notebook, written by an agent, checked by a second agent, and reviewed by a domain expert.</p>
+  <p>Each of the post's three case studies turns on a different kind of claim. Each kind names something a program could recompute, so the reviewer checks a short list of facts and not the whole analysis.</p>
+  <figure>
+    <figcaption><b>Table 1.</b> Three types of checkable claim, one per case study in the post. Only the first is built here.</figcaption>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Claim type</th><th>Case in the post</th><th>What a checker recomputes</th><th>Status here</th></tr></thead>
+        <tbody>
+          <tr><td>Collision</td><td>Antibody grouping: identical inputs, different answers</td><td>That the listed cases match on the solver's inputs and differ in answer; the ceiling that follows</td><td>Implemented</td></tr>
+          <tr><td>Leakage</td><td>Drug screen: near-duplicate compounds inflate the oracle</td><td>The similarity of each listed pair; the score with those pairs held apart</td><td>Sketch only</td></tr>
+          <tr><td>Physical floor</td><td>GPU kernel: data that must be read, at a measured speed</td><td>Bytes divided by a re-measured bandwidth</td><td>Sketch only</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>The collision argument itself is the post's: its second case study groups cases with identical inputs and takes the majority answer. This note builds the checking around it and measures where it holds.</p>
 
   <h2><span class="n">2</span>A collision is a proof</h2>
   <p>Take a table of 72 loan applications. The solver sees three columns and must predict <code>approved</code>. A fourth column, an underwriter override, is withheld. The proposed target is 68 correct, which is what an oracle given every column scores.</p>
-
   <figure>
     <div class="scroll">
       <table class="data">
@@ -127,25 +133,21 @@ footer p { margin: 0; }
         </tbody>
       </table>
     </div>
-    <figcaption><b>Figure 1.</b> One collision group from the example table. The three visible columns are identical in all five rows, so any rule gives them the same answer. Answering 1 gets three right and two wrong; answering 0 gets two right and three wrong.</figcaption>
+    <figcaption><b>Figure 1.</b> One collision group. The three visible columns are identical in all five rows, so any rule gives them the same answer. Answering 1 gets three right; answering 0 gets two right.</figcaption>
   </figure>
+  <p>Whatever the solver answers for this pattern, at least two rows are wrong. The same count works for any group: its size minus its most common label. Seven groups in this table force 9 errors, so no solver limited to the visible columns scores above 63, and the target of 68 is refuted. With a start of 37, rewards measured against 68 are at most 0.84 of rewards measured against 63.</p>
+  <p>The bound covers deterministic solvers. One that randomizes among identical rows obeys it on average and can beat it by luck, which section 7 quantifies.</p>
 
-  <p>To the solver these five rows are the same row. Whatever it answers, at least two are wrong. The same count works for any group: its size minus its most common label.</p>
-  <p>Seven groups in this table have mixed labels, and together they force 9 errors. No solver limited to the visible columns can score above 63. The target of 68 is refuted. With a start of 37, rewards measured against 68 are at most 0.84 of rewards measured against 63.</p>
-
-  <h2><span class="n">3</span>The checker</h2>
-  <p>A certificate is a list of row groups. The checker keeps a group only if its rows exist, are distinct, match on every visible column, carry at least two different labels, and reuse no row from another group. It then counts the forced errors itself.</p>
-  <ul>
-    <li><strong>A bad certificate cannot produce a false refutation.</strong> Rejecting or dropping groups only loosens the bound. Tests fuzz this with random groups.</li>
-    <li><strong>Nothing is specified by hand.</strong> The check runs against the table, so there is no separate formal model that could disagree with the data.</li>
-    <li><strong>It works in one direction.</strong> It can show a target is too high. It cannot show a target is right.</li>
-  </ul>
-  <p>The bound covers deterministic predictors that use only the visible columns. A randomized predictor obeys it on average.</p>
+  <h2><span class="n">3</span>What an auditor's certificate adds</h2>
+  <p>A certificate is a list of row groups. The checker accepts a group only if its rows exist, match on the declared columns, and carry different labels, and then counts the forced errors itself. A wrong or partial certificate can only loosen the bound.</p>
+  <p>When the groups match on every visible column, the certificate adds nothing. The checker holds the same table and can compute the exact ceiling without help. An auditor contributes only by declaring a subset of columns to match on, which yields a narrower claim: no rule using just those columns reaches the target.</p>
+  <p>That narrower claim is the one that matters on realistic data. The benchmark's stress tasks add one near-unique visible column, like a dollar amount. No two rows match on everything, so the ceiling for every solver is a perfect score and nothing is refuted: 0 of 20. The post meets the same wall. Counting only identical inputs puts its antibody ceiling near 0.999, and its adopted target comes from restricting to four features.</p>
+  <p>A restricted claim is true as worded and can still mislead. If a dropped column carries signal, a solver that uses it can beat the bound. So the question for a restricted certificate is whether the dropped columns matter, and section 5 tests that.</p>
 
   <h2><span class="n">4</span>Benchmark</h2>
-  <p>There are 120 synthetic tasks: five families (loans, inventory, invoices, budgets, attendance), four scenarios each, six variants per scenario. Each family has its own labelling rule. Two families are held out.</p>
+  <p>There are 120 synthetic tasks: five families (loans, inventory, invoices, budgets, attendance), four scenarios each, six variants per scenario. Each task has 72 evaluation rows and 144 labelled practice rows from the same generator, standing in for the training data a solver would get. Two families are held out.</p>
   <figure>
-    <figcaption><b>Table 1.</b> Six variants of each scenario. The first five form the core set of 100 tasks. The last is reported separately.</figcaption>
+    <figcaption><b>Table 2.</b> Six variants of each scenario. The first five form the core set of 100 tasks. Truth comes from the best visible-only rule under the generator.</figcaption>
     <div class="scroll">
       <table>
         <thead><tr><th>Variant</th><th>Withheld column</th><th>Proposed target</th><th>Truth</th></tr></thead>
@@ -160,100 +162,147 @@ footer p { margin: 0; }
       </table>
     </div>
   </figure>
-  <p>The second and third variants are the hard negatives. Something is hidden, but it does not matter, so an auditor that flags every withheld column is wrong.</p>
-  <p>Ground truth comes from a reference solver: the best visible-only predictor under the generating rule. A target is unsupported when that solver falls short of it.</p>
+  <p>On the core set the exact ceiling refutes all 40 unsupported targets and no supported one. The second and third variants are there so that "something is hidden" cannot stand in for "the target is wrong".</p>
 
-  <h2><span class="n">5</span>Results without a model</h2>
-  <p>Six reference auditors, none of them a language model, were scored on the 100 core tasks.</p>
+  <h2><span class="n">5</span>Testing the choice of columns</h2>
+  <p>Given a restricted certificate, the check fits two simple lookup learners on the practice rows, one using the kept columns and one using all visible columns, and scores both on the evaluation rows. A permutation test, shuffling the dropped columns among practice rows that share kept values, says whether the gain is more than chance.</p>
+  <p>If no signal is detected, the certificate is promoted: its bound becomes the restricted ceiling plus a 95% upper bound on what the dropped columns could add. A promoted result is statistical. It is reported separately and never counted as a proof.</p>
   <figure>
-    <figcaption><b>Table 2.</b> Reference auditors on the core set. False alarms: share of supported tasks called unsupported. Certified recall: share of unsupported tasks where the certificate passed the checker and refuted the target.</figcaption>
+    <figcaption><b>Table 3.</b> Two auditors that declare a subset of columns. The first drops a column without looking; on 28 supported tasks that column carried the signal, so its refutation is misleading.</figcaption>
     <div class="scroll">
       <table>
-        <thead><tr><th>Auditor</th><th class="num">Verdict accuracy</th><th class="num">False alarms</th><th class="num">Certified recall</th><th class="num">False claims certified</th></tr></thead>
+        <thead><tr><th>Auditor</th><th class="num">Misleading refutations flagged</th><th class="num">False flags</th><th class="num">Supported targets refuted after promotion</th><th class="num">Stress targets refuted after promotion</th></tr></thead>
         <tbody>
-          <tr><td>Exhaustive: group every row</td><td class="num">1.00</td><td class="num">0.00</td><td class="num">1.00</td><td class="num">0</td></tr>
-          <tr><td>Lazy: three pairs only</td><td class="num">0.65</td><td class="num">0.00</td><td class="num">0.13</td><td class="num">0</td></tr>
-          <tr class="mark"><td>Sloppy: ignores a visible column</td><td class="num">0.72</td><td class="num">0.47</td><td class="num">0.00</td><td class="num">0</td></tr>
-          <tr><td>Always "supported"</td><td class="num">0.60</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">0</td></tr>
-          <tr><td>Always "unsupported"</td><td class="num">0.40</td><td class="num">1.00</td><td class="num">0.00</td><td class="num">0</td></tr>
-          <tr><td>Flag any withheld column</td><td class="num">0.40</td><td class="num">0.67</td><td class="num">0.00</td><td class="num">0</td></tr>
+          <tr><td>Always drops the last visible column</td><td class="num">27 of 28</td><td class="num">0 of 64</td><td class="num">0</td><td class="num">20 of 20</td></tr>
+          <tr><td>Drops near-unique columns</td><td class="num">none to flag</td><td class="num">0 of 20</td><td class="num">0</td><td class="num">20 of 20</td></tr>
         </tbody>
       </table>
     </div>
   </figure>
-  <p>The row in bold is the reason for the design. That auditor groups rows carelessly and announces refutations with confidence. It is wrong about 47% of the supported tasks. The checker rejects 98% of its groups and certifies none of its claims.</p>
+  <p>The one unflagged case is borderline (p = 0.065, a gain of 3 rows). Its promoted bound includes the uncertainty on that gain and stays above the target, so no supported target is refuted. When the dropped column is pure noise, the test flags 1 of 100 tasks.</p>
+  <p>The stress set goes from 0 of 20 refuted to 20 of 20, as a statistical claim with its assumptions stated. The confidence is specific to this learner and this much practice data. A stronger learner might find signal that this one misses.</p>
 
+  <h2><span class="n">6</span>A two-sided interval</h2>
+  <p>A ceiling alone can only say a target is too high. With practice rows, each task also gets a floor: the evaluation score of a solver trained only on practice data, with its columns chosen by cross-validation. Some solver reaches the floor, so the best achievable score lies between floor and ceiling.</p>
   <figure>
     <div class="scroll">
-      <svg viewBox="0 0 720 150" role="img" aria-label="Number line of correct rows out of 72 for the example table: naive start 37, realistic solver 55, certified ceiling 63, proposed target 68.">
+      <svg viewBox="0 0 720 150" role="img" aria-label="Number line of correct rows out of 72 for the example table: naive start 37, practice-trained solver 59, certified ceiling 63, proposed target 68.">
         <line class="axis" x1="40" y1="80" x2="680" y2="80"/>
         <g class="axis"><line x1="40" y1="76" x2="40" y2="84"/><line x1="192.4" y1="76" x2="192.4" y2="84"/><line x1="344.8" y1="76" x2="344.8" y2="84"/><line x1="497.1" y1="76" x2="497.1" y2="84"/><line x1="649.5" y1="76" x2="649.5" y2="84"/></g>
         <g text-anchor="middle"><text class="tick" x="40" y="101">30</text><text class="tick" x="192.4" y="101">40</text><text class="tick" x="344.8" y="101">50</text><text class="tick" x="497.1" y="101">60</text><text class="tick" x="649.5" y="101">70</text></g>
         <line class="gap" x1="542.9" y1="80" x2="619" y2="80"/>
         <line class="lead" x1="146.7" y1="73" x2="146.7" y2="58"/>
-        <line class="lead" x1="421" y1="73" x2="421" y2="58"/>
+        <line class="lead" x1="481.9" y1="73" x2="481.9" y2="58"/>
         <line class="lead" x1="542.9" y1="72" x2="542.9" y2="34"/>
         <line class="lead" x1="619" y1="88" x2="619" y2="118"/>
         <circle class="dot" cx="146.7" cy="80" r="4"/>
-        <circle class="dot" cx="421" cy="80" r="4"/>
+        <circle class="dot" cx="481.9" cy="80" r="4"/>
         <circle class="dot ceil" cx="542.9" cy="80" r="5.5"/>
         <circle class="dot target" cx="619" cy="80" r="5.5"/>
         <text x="146.7" y="50" text-anchor="middle">naive start 37</text>
-        <text x="421" y="50" text-anchor="middle">realistic solver 55</text>
+        <text x="494" y="50" text-anchor="end">practice-trained solver 59</text>
         <text class="ceil-label" x="542.9" y="26" text-anchor="middle">certified ceiling 63</text>
         <text x="619" y="134" text-anchor="middle">proposed target 68</text>
         <text class="tick" x="680" y="50" text-anchor="end">72 rows in table</text>
       </svg>
     </div>
-    <figcaption><b>Figure 2.</b> Correct rows for the example table. The axis starts at 30. The thick segment is the part of the target the certificate rules out.</figcaption>
+    <figcaption><b>Figure 2.</b> The loan example, in correct rows; the axis starts at 30. A real solver reaches 59, nothing reaches above 63, and the proposed target is 68. The thick segment is what the certificate rules out.</figcaption>
   </figure>
-  <p>The certificate proves less than the truth. It shows 63 is the limit, while the reference solver reaches 55. The difference is rows a solver could only get right by memorizing them.</p>
-
-  <h2><span class="n">6</span>Narrower certificates for realistic features</h2>
-  <p>In the stress variant one visible column is nearly unique, like a dollar amount. No two rows match on everything, so nothing can be certified for every solver: 0 of 20, although the targets are just as unreachable.</p>
-  <p>The post meets the same wall. Counting only identical inputs puts its antibody ceiling near 0.999, and its adopted figure comes from restricting attention to four features. A certificate can take the same step. The auditor declares the columns it matched on, and the checker reports a narrower result: no rule that uses only those columns reaches the target. In the loan example with a requested-amount column added, matching on the three original columns gives 63 again.</p>
+  <p>A target above the ceiling is refuted. A target at or below the floor is witnessed, because a solver reached it. Anything between is open.</p>
   <figure>
-    <figcaption><b>Table 3.</b> Two auditors that declare a subset of columns. Every entry passed the checker. The core set has 60 supported tasks, where any refutation is misleading.</figcaption>
+    <figcaption><b>Table 4.</b> Status of every task's target. No status contradicts the generator's truth.</figcaption>
     <div class="scroll">
       <table>
-        <thead><tr><th>Auditor</th><th class="num">Stress set: targets refuted</th><th class="num">Core set: supported targets "refuted"</th></tr></thead>
+        <thead><tr><th>Truth from the generator</th><th class="num">Witnessed</th><th class="num">Open</th><th class="num">Refuted</th></tr></thead>
         <tbody>
-          <tr><td>Drops near-unique columns</td><td class="num">20 of 20</td><td class="num">0 of 60</td></tr>
-          <tr class="mark"><td>Always drops the last visible column</td><td class="num">20 of 20</td><td class="num">28 of 60</td></tr>
+          <tr><td>Supported, 60 core tasks</td><td class="num">59</td><td class="num">1</td><td class="num">0</td></tr>
+          <tr><td>Unsupported, 40 core tasks</td><td class="num">0</td><td class="num">0</td><td class="num">40</td></tr>
+          <tr><td>Unsupported, 20 stress tasks</td><td class="num">0</td><td class="num">20</td><td class="num">0</td></tr>
         </tbody>
       </table>
     </div>
   </figure>
-  <p>The second auditor never looks at what it drops, and on 28 supported tasks the column it dropped carried the signal. Its claims are true as worded and wrong as conclusions. The checker states the scope of a claim and keeps narrower results out of the certified count. It cannot judge the choice of columns. That judgment stays with a reviewer, as it does in the post.</p>
+  <p>The stress tasks stay open under the proof and are settled only by the promoted bound from section 5. The measured floor also differs from what the generator's rule predicts for a single 72-row draw, by 7 rows below to 10 above on the withheld variant. A realistic score has to be measured.</p>
 
-  <h2><span class="n">7</span>Limitations</h2>
+  <h2><span class="n">7</span>Pairwise F1 and a tripwire</h2>
+  <p><strong>Pairwise F1.</strong> The post's antibody case scores clusterings by F1 over pairs, where accuracy's count does not apply. Each group of indistinguishable pairs gets one call, same or different. Sorting groups by their share of truly-same pairs and taking the best prefix gives the highest F1 any such rule can reach; tests confirm this against brute force.</p>
+  <p>The bound covers rules that decide each pair from that pair's own features. A toy clonal task (48 cells, 12 clones, sibling clones that differ only in a hidden light chain) shows the limit.</p>
+  <figure>
+    <figcaption><b>Table 5.</b> The toy clonal task. The baseline links similar cells and takes connected components. The proposed target of 1.0 is refuted in both rows.</figcaption>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Features matched on</th><th class="num">F1 ceiling</th><th class="num">Baseline F1</th></tr></thead>
+        <tbody>
+          <tr><td>Same gene, junction mismatches</td><td class="num">0.575</td><td class="num">0.592</td></tr>
+          <tr><td>The two above, plus "linked by the baseline"</td><td class="num">0.592</td><td class="num">0.592</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>With two pair features the baseline beats the ceiling, because linking through other cells uses information those features lack. Adding a chain feature brings it inside. The post's four features include a chain distance, and this shows why it is needed.</p>
+  <p><strong>Tripwire.</strong> A submitted result above the ceiling for every solver means the solver saw something it should not have, or the score is wrong. The tripwire rescores the predictions, bounds the chance of beating the ceiling by randomizing among identical rows, and raises an alarm below 1%.</p>
+  <figure>
+    <figcaption><b>Table 6.</b> Tripwire outcomes on the core tasks for four reference solvers.</figcaption>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Solver</th><th class="num">Within ceiling</th><th class="num">Above, luck plausible</th><th class="num">Alarm</th></tr></thead>
+        <tbody>
+          <tr><td>Honest, trained on practice rows</td><td class="num">100</td><td class="num">0</td><td class="num">0</td></tr>
+          <tr><td>Randomizes close calls (5,000 runs)</td><td class="num">4,998</td><td class="num">2</td><td class="num">0</td></tr>
+          <tr><td>Copies the labels</td><td class="num">0</td><td class="num">0</td><td class="num">100</td></tr>
+          <tr><td>Uses the withheld column (20 tasks)</td><td class="num">4</td><td class="num">11</td><td class="num">5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>The last row is the limit. A withheld-column leak gains only a few rows, and on 72 rows the alarm needs about 6 to 10 rows of excess. It catches gross leaks and misses subtle ones at this size.</p>
+
+  <h2><span class="n">8</span>A question about the post's antibody target</h2>
+  <p>The post's adopted antibody target, 0.8922, is computed the way section 2 computes a ceiling: group pairs by identical values of four features and take the majority using the hidden answers. Two things follow from the results above.</p>
   <ul>
-    <li><strong>A script is the best auditor here.</strong> The first row of Table 2 is a group-by a few lines long. On clean tables a language model adds nothing to it. The contribution is the certificate format and its checker.</li>
-    <li><strong>Narrower certificates need a reviewer.</strong> Only a claim about every solver is safe to accept unread. Table 3 shows a careless choice of columns passing the checker.</li>
-    <li><strong>The bound refutes a target and does not replace it.</strong> Figure 2 shows the gap between what is provable and what is realistic.</li>
-    <li><strong>Target size leaks a little.</strong> The best rule that looks only at surface features, such as how large the target is, reaches 70% accuracy where always guessing the majority reaches 60%.</li>
-    <li><strong>Accuracy only.</strong> The count is exact for accuracy. The post applies its grouping to a pairwise F1 score, and another of its cases uses average precision. Certificates for those metrics are not worked out here.</li>
-    <li><strong>Small and synthetic.</strong> Twenty scenarios, five rules, one author.</li>
+    <li><strong>It is an in-sample figure.</strong> Section 6 shows this kind of bound sitting above what a practice-trained solver reaches. With pairs drawn from about 50,000 cells per person the groups are probably large and the slack small, but the post does not report it. Learning the majorities on some people and scoring on others would measure it.</li>
+    <li><strong>It bounds rules on four features, not every solver.</strong> The post puts the limit for any heavy-chain method near 0.999. A solver that uses more of the heavy chain could score above 0.8922, which would put its reward above 1. Whether the remaining features carry signal is what the test in section 5 is for.</li>
+  </ul>
+  <p>This is a question from outside. The post's authors have the data and may already have checked both points.</p>
+
+  <h2><span class="n">9</span>Related work</h2>
+  <ul>
+    <li><strong>Proving a task is broken.</strong> SpecGuard<sup class="ref"><a href="#ref-2">[2]</a></sup> formalizes a coding task's description and its tests in Lean and has the proof checker decide whether any implementation can satisfy both. It is the closest precedent: machine-checked evidence that a task cannot be done as specified. It covers text against tests; this note covers inputs against labels.</li>
+    <li><strong>Impossible tasks as detectors.</strong> ImpossibleBench<sup class="ref"><a href="#ref-3">[3]</a></sup> builds tasks that are impossible by construction, so any pass reveals a shortcut. The tripwire applies the same logic to scores above a proven ceiling.</li>
+    <li><strong>Label errors.</strong> Northcutt et al.<sup class="ref"><a href="#ref-4">[4]</a></sup> found label errors across ten widely used test sets with confident learning,<sup class="ref"><a href="#ref-5">[5]</a></sup> and Vendrow et al.<sup class="ref"><a href="#ref-6">[6]</a></sup> re-annotate benchmarks to remove them. That work repairs individual labels. A collision ceiling takes the labels as given and measures what the inputs cannot distinguish.</li>
+    <li><strong>Bayes error.</strong> FeeBee<sup class="ref"><a href="#ref-7">[7]</a></sup> evaluates estimators of the Bayes error, the lowest error any classifier can reach on a distribution. The collision ceiling is a narrower object: an exact bound for one finite table, not an estimate for a distribution.</li>
   </ul>
 
-  <h2><span class="n">8</span>An earlier version that failed</h2>
-  <p>The first version used short text tasks. An auditor had to give two readings of the documents that led to different answers. Before any model was run, a regular expression was tried against it. It labelled all 80 tasks correctly and produced a valid pair of readings for each. A benchmark that string matching solves cannot compare auditors.</p>
-  <p>That version stays in the repository with the result pinned as a test, and the second version measures shortcut baselines before anything else.</p>
+  <h2><span class="n">10</span>Limitations</h2>
+  <ul>
+    <li><strong>One claim type of three.</strong> Leakage and physical-floor claims are sketched in Table 1 and not built. They decide two of the post's three case studies.</li>
+    <li><strong>Small and synthetic.</strong> Twenty scenarios, five rules, one author. Each table has only 18 distinct visible patterns in 72 rows, which is why exact matching works on the core set at all.</li>
+    <li><strong>Truth comes from the generator.</strong> Supported and unsupported are defined by the generating rule. The floor in section 6 is measured separately and agrees, but only on data this generator made.</li>
+    <li><strong>The promotion test is learner-specific.</strong> It speaks for a lookup learner on 144 practice rows, with a normal approximation for its upper bound.</li>
+    <li><strong>The F1 bound covers per-pair rules only,</strong> and the tripwire misses small leaks on small tables.</li>
+    <li><strong>No model was tested.</strong> Comparing a model's bare verdict with a verdict plus certificate would show little: certified false alarms are zero by construction, and a model with tools would write the group-by. A useful experiment would give an agent a prose description of what the solver sees and data where the matching columns have to be discovered. That is not built.</li>
+    <li><strong>An earlier version failed.</strong> It used short text tasks, and a regular expression solved all 80 before any model was run. It stays in the repository with that result pinned as a test.</li>
+  </ul>
 
-  <h2><span class="n">9</span>An experiment that has not been run</h2>
-  <p>The repository includes prompts and a scorer for one comparison: ask a model for a verdict alone, or ask it for a verdict plus a certificate. In the second condition only certified claims count, so false alarms are zero by construction.</p>
-  <p>The open questions are how often the verdict-only condition raises a false alarm on the hard negatives, and how much recall the certificate requirement costs. If the verdict-only condition raises none, certificates buy nothing on this benchmark. That run is not scheduled.</p>
-
-  <h2><span class="n">10</span>Reproducing the results</h2>
-  <p>Python 3.9 or later, standard library only. Code and data are in the repository.<sup class="ref"><a href="#ref-2">[2]</a></sup></p>
+  <h2><span class="n">11</span>Reproducing the results</h2>
+  <p>Tested on Python 3.12 and 3.14, standard library only. Code, data and tests are in the repository.<sup class="ref"><a href="#ref-8">[8]</a></sup></p>
   <pre>python3 -m unittest discover -s tests
+python3 ceiling.py build
 python3 ceiling.py demo
-python3 ceiling.py control --split all</pre>
+python3 ceiling.py control --split all
+python3 ceiling.py interval --split all
+python3 ceiling.py tripwire --split all</pre>
 
   <h2>References</h2>
   <ol class="refs">
     <li id="ref-1"><span>[1]</span><span>Abundant Research Team. "How we set realistic targets for research tasks." November 16, 2026. <a href="https://www.abundant.ai/blog/realistic-targets/">abundant.ai/blog/realistic-targets</a></span></li>
-    <li id="ref-2"><span>[2]</span><span>Code, data and tests for this note. <a href="https://github.com/JamieXW/evidence-audit">github.com/JamieXW/evidence-audit</a></span></li>
+    <li id="ref-2"><span>[2]</span><span>P. Biyani, K. Dvijotham. "SpecGuard: Proving a Task Is Broken Before the Agent Cheats." 2026. <a href="https://arxiv.org/abs/2610.09159">arXiv:2610.09159</a></span></li>
+    <li id="ref-3"><span>[3]</span><span>Z. Zhong, A. Raghunathan, N. Carlini. "ImpossibleBench: Measuring LLMs' Propensity of Exploiting Test Cases." 2025. <a href="https://arxiv.org/abs/2510.20270">arXiv:2510.20270</a></span></li>
+    <li id="ref-4"><span>[4]</span><span>C. G. Northcutt, A. Athalye, J. Mueller. "Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks." 2021. <a href="https://arxiv.org/abs/2103.14749">arXiv:2103.14749</a></span></li>
+    <li id="ref-5"><span>[5]</span><span>C. G. Northcutt, L. Jiang, I. L. Chuang. "Confident Learning: Estimating Uncertainty in Dataset Labels." 2019. <a href="https://arxiv.org/abs/1911.00068">arXiv:1911.00068</a></span></li>
+    <li id="ref-6"><span>[6]</span><span>J. Vendrow, E. Vendrow, S. Beery, et al. "Do Large Language Model Benchmarks Test Reliability?" 2025. <a href="https://arxiv.org/abs/2502.03461">arXiv:2502.03461</a></span></li>
+    <li id="ref-7"><span>[7]</span><span>C. Renggli, L. Rimanic, N. Hollenstein, et al. "Evaluating Bayes Error Estimators on Real-World Datasets with FeeBee." 2021. <a href="https://arxiv.org/abs/2108.13034">arXiv:2108.13034</a></span></li>
+    <li id="ref-8"><span>[8]</span><span>Code, data and tests for this note. <a href="https://github.com/JamieXW/evidence-audit">github.com/JamieXW/evidence-audit</a></span></li>
   </ol>
 
   <footer>

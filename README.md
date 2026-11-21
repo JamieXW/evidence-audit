@@ -224,28 +224,34 @@ feature is needed. The proposed target of 1.0 is refuted either way.
 
 ## Known weaknesses
 
-1. **A short script is the strongest auditor here.** `exhaustive` is a group-by and it
-   scores perfectly on the core set. On clean tables an LLM adds nothing over it. The
-   contribution is the certificate format and checker, not a claim that a model is needed.
-2. **Realistic features defeat the strong claim, and the weaker claim needs a reviewer.**
-   In the `sparse` stress variant one near-unique visible column leaves no two rows
-   identical. Nothing can be certified for every solver: 0 of 20, although the target
-   is just as unreachable. Real data looks like this. The post meets the same wall:
-   counting only identical inputs puts its antibody ceiling near 0.999, and its adopted
-   figure comes from restricting to four features. Restricted certificates take the
-   same step and recover all 20, but only as a claim about rules using the declared
-   columns. A careless choice of columns passes the checker and misleads (table above).
+1. **For every-solver claims the certificate is redundant.** The checker holds the full
+   table, so it can compute the exact ceiling itself; `exhaustive` is a group-by and
+   scores perfectly on the core set. A certificate carries information only when it
+   declares a column subset, which is why the signal check on dropped columns is the
+   part that matters. On clean tables an LLM adds nothing.
+2. **Realistic features defeat the strong claim; the weaker claim is statistical.** In
+   the `sparse` stress variant one near-unique visible column leaves no two rows
+   identical, so nothing can be certified for every solver: 0 of 20. The post meets the
+   same wall: counting only identical inputs puts its antibody ceiling near 0.999, and
+   its adopted figure comes from restricting to four features. Restricted certificates
+   plus the signal check recover all 20, with confidence that is specific to a lookup
+   learner and 144 practice rows.
 3. **The bound is loose even when it works.** In the example above the certificate
    proves 63; the reference solver reaches 55. The gap is rows a lookup table could
    memorize. The certificate refutes a target; it does not estimate the right one.
 4. **Target size is a mild tell.** The best single-threshold rule on surface features
    reaches 0.70 against a 0.60 majority rate (`python3 ceiling.py shortcuts --split all`),
    because inflated targets run slightly high. A test fails if any shortcut exceeds 0.70.
-5. **Accuracy only.** The forced-error count is exact for accuracy. The post applies its
-   grouping to a pairwise F1 score, and another of its cases uses average precision.
-   Certificates for those metrics are not worked out here.
-6. **Small and synthetic.** 20 scenarios, 5 rule families, 2 held-out families.
-   One author wrote every rule.
+5. **One claim type of three.** Collisions decide the post's antibody case. Its drug-screen
+   case turns on leakage between near-duplicate compounds and its kernel case on a
+   physical floor; neither is built here. The F1 bound covers per-pair rules only, and
+   average precision is not covered.
+6. **Small and synthetic.** 20 scenarios, 5 rule families, 2 held-out families, one
+   author. Each table has only 18 distinct visible patterns in 72 rows, which is why
+   exact matching works on the core set at all. Truth labels come from the generating
+   rule, not from measurement.
+7. **The tripwire misses small leaks.** On 72 rows it needs about 6 to 10 rows of excess
+   to alarm, and catches 5 of 20 withheld-column leaks.
 
 ## v0.1, kept for the record
 
@@ -279,7 +285,13 @@ Score each repeat as its own file.
 
 ## Next
 
-[docs/PROTOCOL.md](docs/PROTOCOL.md) specifies a model comparison. It has not been run
-and no run is currently scheduled or funded; the prompts and scorer are ready for
-anyone who wants to try it. [docs/DESIGN_NOTES.md](docs/DESIGN_NOTES.md) gives the
-reasoning behind each decision.
+[note/collision-certificates.html](note/collision-certificates.html) is the write-up,
+with related work. [docs/DESIGN_NOTES.md](docs/DESIGN_NOTES.md) gives the reasoning
+behind each decision.
+
+[docs/PROTOCOL.md](docs/PROTOCOL.md) specifies a model comparison that has not been
+run. As designed it would show little: certified false alarms are zero by construction,
+and a model with tools would write the group-by. A more useful experiment would give an
+agent a prose description of what the solver sees and data where the matching columns
+have to be discovered. Other next steps: leakage and physical-floor checkers, and a
+pilot on real tabular data with coarsened features.
