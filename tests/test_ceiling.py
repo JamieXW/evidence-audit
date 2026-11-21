@@ -6,9 +6,9 @@ import unittest
 from fractions import Fraction
 
 from ceiling import (CONTROLS, CORE, N_PRACTICE, STRESS, best_pairwise_f1, build,
-                     build_practice, check_certificate, check_f1_certificate, collisions,
-                     evaluate, exhaustive, forced_errors, shortcuts, signal_check, table,
-                     toy_clonal_task)
+                     build_practice, check_certificate, check_f1_certificate, choose_solver,
+                     collisions, evaluate, exhaustive, forced_errors, interval,
+                     interval_report, shortcuts, signal_check, table, toy_clonal_task)
 
 
 class CeilingTests(unittest.TestCase):
@@ -350,6 +350,54 @@ class PairwiseF1Tests(unittest.TestCase):
         broken['rows'][0][-1] = 2
         with self.assertRaises(ValueError):
             check_f1_certificate(broken, groups)
+
+
+class IntervalTests(unittest.TestCase):
+    """Task: floor from a concrete solver, certified ceiling, cross-fit estimate."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tasks, cls.keys = build()
+        cls.by_task = {t['id']: t for t in cls.tasks}
+        cls.practice = build_practice()
+        cls.report = interval_report(cls.tasks, cls.keys, cls.practice)
+
+    def test_floor_never_exceeds_ceiling(self):
+        for d in self.report['details']:
+            self.assertLessEqual(d['floor'], d['ceiling'], d['id'])
+
+    def test_ceiling_matches_exact_ceiling(self):
+        exact = {k['id']: k['exact_ceiling_correct'] for k in self.keys}
+        for d in self.report['details']:
+            self.assertEqual(d['ceiling'], exact[d['id']])
+
+    def test_solver_choice_ignores_evaluation_labels(self):
+        for task in self.tasks[:30]:
+            prac = self.practice[task['id']]
+            flipped = copy.deepcopy(task)
+            for row in flipped['rows']:
+                row[-1] = 1 - row[-1]
+            self.assertEqual(interval(task, prac)['floor_solver_columns'],
+                             interval(flipped, prac)['floor_solver_columns'])
+            self.assertEqual(choose_solver(task, prac['rows']), choose_solver(flipped, prac['rows']))
+
+    def test_no_status_contradicts_the_generator(self):
+        counts = self.report['by_truth_and_status']
+        self.assertNotIn('unsupported/witnessed', counts)
+        self.assertNotIn('supported/refuted', counts)
+
+    def test_core_tasks_are_almost_all_resolved(self):
+        core = [d for d in self.report['details'] if d['variant'] in CORE]
+        self.assertEqual(len(core), 100)
+        self.assertGreaterEqual(sum(d['status'] != 'open' for d in core), 95)
+
+    def test_sparse_stays_open_without_a_restriction(self):
+        sparse = [d for d in self.report['details'] if d['variant'] == 'sparse']
+        self.assertEqual({d['status'] for d in sparse}, {'open'})
+        self.assertEqual({d['ceiling'] for d in sparse}, {72})
+
+    def test_report_is_deterministic(self):
+        self.assertEqual(self.report, interval_report(self.tasks, self.keys, self.practice))
 
 
 if __name__ == '__main__':

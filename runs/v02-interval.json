@@ -1,0 +1,2438 @@
+{
+  "by_truth_and_status": {
+    "supported/open": 1,
+    "supported/witnessed": 59,
+    "unsupported/open": 20,
+    "unsupported/refuted": 40
+  },
+  "by_variant": {
+    "complete": {
+      "refuted": 0,
+      "witnessed": 20,
+      "open": 0,
+      "mean_abs_gap_realistic_vs_reference": 0.1,
+      "floor_above_reference": 0
+    },
+    "irrelevant": {
+      "refuted": 0,
+      "witnessed": 20,
+      "open": 0,
+      "mean_abs_gap_realistic_vs_reference": 0.1,
+      "floor_above_reference": 0
+    },
+    "redundant": {
+      "refuted": 0,
+      "witnessed": 19,
+      "open": 1,
+      "mean_abs_gap_realistic_vs_reference": 1.28,
+      "floor_above_reference": 0
+    },
+    "withheld": {
+      "refuted": 20,
+      "witnessed": 0,
+      "open": 0,
+      "mean_abs_gap_realistic_vs_reference": 2.43,
+      "floor_above_reference": 6
+    },
+    "optimistic": {
+      "refuted": 20,
+      "witnessed": 0,
+      "open": 0,
+      "mean_abs_gap_realistic_vs_reference": 0.1,
+      "floor_above_reference": 0
+    },
+    "sparse": {
+      "refuted": 0,
+      "witnessed": 0,
+      "open": 20,
+      "mean_abs_gap_realistic_vs_reference": 1.76,
+      "floor_above_reference": 5
+    }
+  },
+  "details": [
+    {
+      "id": "f5712cf6dc25c02d",
+      "scenario": "loan-0",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "8bc1161eebe164f2",
+      "scenario": "loan-0",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "83d1da2ff475006c",
+      "scenario": "loan-0",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "367b8a50ff3e88b3",
+      "scenario": "loan-0",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 55,
+      "floor": 59,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band",
+        "long_term"
+      ],
+      "ceiling": 63,
+      "realistic": 59.0,
+      "realistic_directions": [
+        59,
+        59.0
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "d775793f9da7e27e",
+      "scenario": "loan-0",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 70,
+      "status": "refuted"
+    },
+    {
+      "id": "6ed456a5968e4889",
+      "scenario": "loan-0",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 55,
+      "floor": 59,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band",
+        "long_term"
+      ],
+      "ceiling": 72,
+      "realistic": 59.0,
+      "realistic_directions": [
+        59,
+        59.0
+      ],
+      "target": 68,
+      "status": "open"
+    },
+    {
+      "id": "4ad2532850442eb0",
+      "scenario": "loan-1",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "89ce42715f0bb063",
+      "scenario": "loan-1",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "f0d9539022cf3f5f",
+      "scenario": "loan-1",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "80fc4ad410bab223",
+      "scenario": "loan-1",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 52,
+      "floor": 50,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 62,
+      "realistic": 52.2,
+      "realistic_directions": [
+        50,
+        54.5
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "dcf31b23e484e511",
+      "scenario": "loan-1",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 69,
+      "status": "refuted"
+    },
+    {
+      "id": "ee5096c776ef3d5b",
+      "scenario": "loan-1",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 52,
+      "floor": 50,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 72,
+      "realistic": 52.0,
+      "realistic_directions": [
+        50,
+        54.0
+      ],
+      "target": 66,
+      "status": "open"
+    },
+    {
+      "id": "b97f03fe8df9f34e",
+      "scenario": "loan-2",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "bca99698ec15c0e3",
+      "scenario": "loan-2",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "2639999f9eb4cf7a",
+      "scenario": "loan-2",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "a6d071b496c8b168",
+      "scenario": "loan-2",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 53,
+      "floor": 53,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 58,
+      "realistic": 50.0,
+      "realistic_directions": [
+        53,
+        47.0
+      ],
+      "target": 63,
+      "status": "refuted"
+    },
+    {
+      "id": "fdb1e03533192937",
+      "scenario": "loan-2",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "1581ee5a39bbff9b",
+      "scenario": "loan-2",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 53,
+      "floor": 56,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band",
+        "long_term"
+      ],
+      "ceiling": 72,
+      "realistic": 56.0,
+      "realistic_directions": [
+        56,
+        56.0
+      ],
+      "target": 63,
+      "status": "open"
+    },
+    {
+      "id": "a62b66cd7719c21f",
+      "scenario": "loan-3",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 60,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "b24f3643c34ea3f9",
+      "scenario": "loan-3",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 60,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "767085d73e40918d",
+      "scenario": "loan-3",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 60,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "13e41bb14b9be70b",
+      "scenario": "loan-3",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 50,
+      "floor": 47,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band",
+        "long_term"
+      ],
+      "ceiling": 53,
+      "realistic": 47.2,
+      "realistic_directions": [
+        47,
+        47.5
+      ],
+      "target": 60,
+      "status": "refuted"
+    },
+    {
+      "id": "98509237ca324497",
+      "scenario": "loan-3",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 60,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "63f87c101a639e83",
+      "scenario": "loan-3",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 50,
+      "floor": 52,
+      "floor_solver_columns": [
+        "income_band",
+        "debt_band"
+      ],
+      "ceiling": 72,
+      "realistic": 49.8,
+      "realistic_directions": [
+        52,
+        47.5
+      ],
+      "target": 60,
+      "status": "open"
+    },
+    {
+      "id": "aaf440a7fb35fbc9",
+      "scenario": "inventory-0",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "2d837dca43966c88",
+      "scenario": "inventory-0",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "a4435951e956fd68",
+      "scenario": "inventory-0",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 66,
+      "realistic": 63.2,
+      "realistic_directions": [
+        66,
+        60.5
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "9fb42f782fbe96cc",
+      "scenario": "inventory-0",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 58,
+      "floor": 58,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 62,
+      "realistic": 57.5,
+      "realistic_directions": [
+        58,
+        57.0
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "e5602a91b6cc3cee",
+      "scenario": "inventory-0",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 69,
+      "status": "refuted"
+    },
+    {
+      "id": "3dfff668913654cb",
+      "scenario": "inventory-0",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 58,
+      "floor": 58,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 72,
+      "realistic": 57.5,
+      "realistic_directions": [
+        58,
+        57.0
+      ],
+      "target": 66,
+      "status": "open"
+    },
+    {
+      "id": "50ee1644b8ee5a3e",
+      "scenario": "inventory-1",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "852b82c749692517",
+      "scenario": "inventory-1",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "6984b0449b9e64a1",
+      "scenario": "inventory-1",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 63,
+      "realistic": 60.8,
+      "realistic_directions": [
+        63,
+        58.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "edb589cf146a7a40",
+      "scenario": "inventory-1",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 54,
+      "floor": 55,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 60,
+      "realistic": 49.0,
+      "realistic_directions": [
+        55,
+        43.0
+      ],
+      "target": 63,
+      "status": "refuted"
+    },
+    {
+      "id": "b0a658b0e8bc2369",
+      "scenario": "inventory-1",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "6547fc13902323f7",
+      "scenario": "inventory-1",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 54,
+      "floor": 54,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 72,
+      "realistic": 52.8,
+      "realistic_directions": [
+        54,
+        51.5
+      ],
+      "target": 63,
+      "status": "open"
+    },
+    {
+      "id": "db08ec3e0b8851e9",
+      "scenario": "inventory-2",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 60,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "63f4e89ce75d7ceb",
+      "scenario": "inventory-2",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 60,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "edb1dd0ea9605c3a",
+      "scenario": "inventory-2",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 56,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 60,
+      "realistic": 56.5,
+      "realistic_directions": [
+        56,
+        57.0
+      ],
+      "target": 60,
+      "status": "open"
+    },
+    {
+      "id": "f25498986cec3bf4",
+      "scenario": "inventory-2",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 57,
+      "floor": 50,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 59,
+      "realistic": 50.8,
+      "realistic_directions": [
+        50,
+        51.5
+      ],
+      "target": 60,
+      "status": "refuted"
+    },
+    {
+      "id": "319fb60de0c400dd",
+      "scenario": "inventory-2",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 60,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "526c8d6c95dcbc4d",
+      "scenario": "inventory-2",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 57,
+      "floor": 50,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 72,
+      "realistic": 50.8,
+      "realistic_directions": [
+        50,
+        51.5
+      ],
+      "target": 60,
+      "status": "open"
+    },
+    {
+      "id": "f7b8c61b1ed6c9b3",
+      "scenario": "inventory-3",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "0ede3dd544815760",
+      "scenario": "inventory-3",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "ce2d0c07634aa3bc",
+      "scenario": "inventory-3",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "cbf9f05b3442aac5",
+      "scenario": "inventory-3",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 59,
+      "floor": 54,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band",
+        "perishable"
+      ],
+      "ceiling": 63,
+      "realistic": 53.8,
+      "realistic_directions": [
+        54,
+        53.5
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "61f7d71ac78c5e57",
+      "scenario": "inventory-3",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 70,
+      "status": "refuted"
+    },
+    {
+      "id": "aac623cd9f8fb60e",
+      "scenario": "inventory-3",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 59,
+      "floor": 59,
+      "floor_solver_columns": [
+        "demand_band",
+        "stock_band"
+      ],
+      "ceiling": 72,
+      "realistic": 57.2,
+      "realistic_directions": [
+        59,
+        55.5
+      ],
+      "target": 68,
+      "status": "open"
+    },
+    {
+      "id": "4dc595788c0bf94c",
+      "scenario": "invoice-0",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 64,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "ff51f1394a54855c",
+      "scenario": "invoice-0",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 64,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "16fdd50972356e5d",
+      "scenario": "invoice-0",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "customer_tier",
+        "has_po"
+      ],
+      "ceiling": 64,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "e5a1089e86ff44f2",
+      "scenario": "invoice-0",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 41,
+      "floor": 38,
+      "floor_solver_columns": [
+        "customer_tier"
+      ],
+      "ceiling": 47,
+      "realistic": 37.0,
+      "realistic_directions": [
+        38,
+        36.0
+      ],
+      "target": 63,
+      "status": "refuted"
+    },
+    {
+      "id": "0ce4daed00908781",
+      "scenario": "invoice-0",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 64,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "39592f63a86afed4",
+      "scenario": "invoice-0",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 41,
+      "floor": 38,
+      "floor_solver_columns": [
+        "customer_tier"
+      ],
+      "ceiling": 72,
+      "realistic": 37.0,
+      "realistic_directions": [
+        38,
+        36.0
+      ],
+      "target": 63,
+      "status": "open"
+    },
+    {
+      "id": "0b2e24401bb2a1ea",
+      "scenario": "invoice-1",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 61,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "67eba6e4379fcf08",
+      "scenario": "invoice-1",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 61,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "4068d4a25fdea38d",
+      "scenario": "invoice-1",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "customer_tier",
+        "has_po"
+      ],
+      "ceiling": 61,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "98e3102739d7d71f",
+      "scenario": "invoice-1",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 32,
+      "floor": 32,
+      "floor_solver_columns": [
+        "customer_tier",
+        "has_po"
+      ],
+      "ceiling": 49,
+      "realistic": 32.5,
+      "realistic_directions": [
+        32,
+        33.0
+      ],
+      "target": 60,
+      "status": "refuted"
+    },
+    {
+      "id": "4be5411603f65192",
+      "scenario": "invoice-1",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 61,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "08c71d64b27e620d",
+      "scenario": "invoice-1",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 32,
+      "floor": 32,
+      "floor_solver_columns": [
+        "customer_tier",
+        "has_po"
+      ],
+      "ceiling": 72,
+      "realistic": 32.2,
+      "realistic_directions": [
+        32,
+        32.5
+      ],
+      "target": 60,
+      "status": "open"
+    },
+    {
+      "id": "a79145c3e441cfc1",
+      "scenario": "invoice-2",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "aa75888cf95d79d7",
+      "scenario": "invoice-2",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "010711ef1aeeba14",
+      "scenario": "invoice-2",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "customer_tier",
+        "has_po"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "b2f7bfba8d5c3928",
+      "scenario": "invoice-2",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 39,
+      "floor": 38,
+      "floor_solver_columns": [
+        "amount_band"
+      ],
+      "ceiling": 55,
+      "realistic": 37.0,
+      "realistic_directions": [
+        38,
+        36.0
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "79d32cedc6ba28f6",
+      "scenario": "invoice-2",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 70,
+      "status": "refuted"
+    },
+    {
+      "id": "3d37916296204aca",
+      "scenario": "invoice-2",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 39,
+      "floor": 38,
+      "floor_solver_columns": [
+        "amount_band"
+      ],
+      "ceiling": 72,
+      "realistic": 37.0,
+      "realistic_directions": [
+        38,
+        36.0
+      ],
+      "target": 68,
+      "status": "open"
+    },
+    {
+      "id": "da714a5644301393",
+      "scenario": "invoice-3",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "423b2ede6dcbec14",
+      "scenario": "invoice-3",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "201b1314ace7bd3f",
+      "scenario": "invoice-3",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "customer_tier",
+        "has_po"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "925a79851e6c7dcc",
+      "scenario": "invoice-3",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 38,
+      "floor": 38,
+      "floor_solver_columns": [],
+      "ceiling": 49,
+      "realistic": 37.8,
+      "realistic_directions": [
+        38,
+        37.5
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "7d1f2bbfebcfcd2c",
+      "scenario": "invoice-3",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "amount_band",
+        "has_po"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 69,
+      "status": "refuted"
+    },
+    {
+      "id": "2aee997395ffd234",
+      "scenario": "invoice-3",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 38,
+      "floor": 38,
+      "floor_solver_columns": [],
+      "ceiling": 72,
+      "realistic": 38.8,
+      "realistic_directions": [
+        38,
+        39.5
+      ],
+      "target": 66,
+      "status": "open"
+    },
+    {
+      "id": "9bbcfd7b794b632b",
+      "scenario": "budget-0",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 63,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "59d3d507636f7d93",
+      "scenario": "budget-0",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 63,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "ccd6afa2034ac694",
+      "scenario": "budget-0",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "spend_band",
+        "plan_band"
+      ],
+      "ceiling": 63,
+      "realistic": 55.2,
+      "realistic_directions": [
+        60,
+        50.5
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "166af5a2c4ab352b",
+      "scenario": "budget-0",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 48,
+      "floor": 49,
+      "floor_solver_columns": [
+        "spend_band",
+        "plan_band"
+      ],
+      "ceiling": 56,
+      "realistic": 50.8,
+      "realistic_directions": [
+        49,
+        52.5
+      ],
+      "target": 60,
+      "status": "refuted"
+    },
+    {
+      "id": "4d6bfaf7840d177e",
+      "scenario": "budget-0",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 63,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "cc81262369a6f9f2",
+      "scenario": "budget-0",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 48,
+      "floor": 49,
+      "floor_solver_columns": [
+        "spend_band",
+        "plan_band"
+      ],
+      "ceiling": 72,
+      "realistic": 50.8,
+      "realistic_directions": [
+        49,
+        52.5
+      ],
+      "target": 60,
+      "status": "open"
+    },
+    {
+      "id": "49286e758e80ea4a",
+      "scenario": "budget-1",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "12007125ef4bd98b",
+      "scenario": "budget-1",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "0f75ed288c1f43ec",
+      "scenario": "budget-1",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "spend_band",
+        "plan_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "9c44e9da5bcb01c5",
+      "scenario": "budget-1",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 62,
+      "floor": 62,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 63,
+      "realistic": 61.0,
+      "realistic_directions": [
+        62,
+        60.0
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "90baac94436cbf70",
+      "scenario": "budget-1",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 70,
+      "status": "refuted"
+    },
+    {
+      "id": "4280ea0d8b49d190",
+      "scenario": "budget-1",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 62,
+      "floor": 62,
+      "floor_solver_columns": [
+        "spend_band",
+        "plan_band"
+      ],
+      "ceiling": 72,
+      "realistic": 61.0,
+      "realistic_directions": [
+        62,
+        60.0
+      ],
+      "target": 68,
+      "status": "open"
+    },
+    {
+      "id": "a0fb75a4979fec5f",
+      "scenario": "budget-2",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 68,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "6a8cff6a4880cfb9",
+      "scenario": "budget-2",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 68,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "2b60ae6d3cd73bef",
+      "scenario": "budget-2",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "spend_band",
+        "plan_band"
+      ],
+      "ceiling": 68,
+      "realistic": 59.8,
+      "realistic_directions": [
+        66,
+        53.5
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "ae452ef840cf554d",
+      "scenario": "budget-2",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 61,
+      "floor": 61,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 64,
+      "realistic": 60.8,
+      "realistic_directions": [
+        61,
+        60.5
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "8dbfc515dab378bb",
+      "scenario": "budget-2",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 68,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 69,
+      "status": "refuted"
+    },
+    {
+      "id": "9d240df83d8b5ec8",
+      "scenario": "budget-2",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 61,
+      "floor": 61,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 72,
+      "realistic": 60.8,
+      "realistic_directions": [
+        61,
+        60.5
+      ],
+      "target": 66,
+      "status": "open"
+    },
+    {
+      "id": "e9b9357f1c551ceb",
+      "scenario": "budget-3",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "f4a9806c3d9e478e",
+      "scenario": "budget-3",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "6db5a3ea99766a81",
+      "scenario": "budget-3",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "spend_band",
+        "plan_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "7c26f054d07e00df",
+      "scenario": "budget-3",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 57,
+      "floor": 56,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 60,
+      "realistic": 57.2,
+      "realistic_directions": [
+        56,
+        58.5
+      ],
+      "target": 63,
+      "status": "refuted"
+    },
+    {
+      "id": "841769e5b3976cb6",
+      "scenario": "budget-3",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "de37eba4fe112b1d",
+      "scenario": "budget-3",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 57,
+      "floor": 56,
+      "floor_solver_columns": [
+        "spend_band"
+      ],
+      "ceiling": 72,
+      "realistic": 57.8,
+      "realistic_directions": [
+        56,
+        59.5
+      ],
+      "target": 63,
+      "status": "open"
+    },
+    {
+      "id": "14c158c5baaaba6e",
+      "scenario": "attendance-0",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "c5d5942b209dff9d",
+      "scenario": "attendance-0",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "f4907e84e445053d",
+      "scenario": "attendance-0",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "sessions_band",
+        "role",
+        "remote"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 68,
+      "status": "witnessed"
+    },
+    {
+      "id": "58245cba41874e4f",
+      "scenario": "attendance-0",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 50,
+      "floor": 50,
+      "floor_solver_columns": [],
+      "ceiling": 59,
+      "realistic": 50.0,
+      "realistic_directions": [
+        50,
+        50.0
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "226edf9ec836e542",
+      "scenario": "attendance-0",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 68,
+      "floor": 68,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 68,
+      "realistic": 68.2,
+      "realistic_directions": [
+        68,
+        68.5
+      ],
+      "target": 70,
+      "status": "refuted"
+    },
+    {
+      "id": "c8c6eb9ffc4c4dfd",
+      "scenario": "attendance-0",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 50,
+      "floor": 50,
+      "floor_solver_columns": [],
+      "ceiling": 72,
+      "realistic": 50.0,
+      "realistic_directions": [
+        50,
+        50.0
+      ],
+      "target": 68,
+      "status": "open"
+    },
+    {
+      "id": "2f6efa767cc77bd9",
+      "scenario": "attendance-1",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "d614b70bb9a5af46",
+      "scenario": "attendance-1",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "3f26f5fa7a28c7b5",
+      "scenario": "attendance-1",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "sessions_band",
+        "role",
+        "remote"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 66,
+      "status": "witnessed"
+    },
+    {
+      "id": "b6f0b13bd858d4f7",
+      "scenario": "attendance-1",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 45,
+      "floor": 51,
+      "floor_solver_columns": [
+        "sessions_band"
+      ],
+      "ceiling": 58,
+      "realistic": 47.0,
+      "realistic_directions": [
+        51,
+        43.0
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "69d88127fd9924df",
+      "scenario": "attendance-1",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 66,
+      "floor": 66,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 66,
+      "realistic": 66.0,
+      "realistic_directions": [
+        66,
+        66.0
+      ],
+      "target": 69,
+      "status": "refuted"
+    },
+    {
+      "id": "76cfe148ee124eb1",
+      "scenario": "attendance-1",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 45,
+      "floor": 45,
+      "floor_solver_columns": [
+        "sessions_band",
+        "role"
+      ],
+      "ceiling": 72,
+      "realistic": 45.0,
+      "realistic_directions": [
+        45,
+        45.0
+      ],
+      "target": 66,
+      "status": "open"
+    },
+    {
+      "id": "241798030fc3fe01",
+      "scenario": "attendance-2",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "c33fd0c0ed5efc79",
+      "scenario": "attendance-2",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "14fd57f22daf5608",
+      "scenario": "attendance-2",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "sessions_band",
+        "role",
+        "remote"
+      ],
+      "ceiling": 63,
+      "realistic": 62.0,
+      "realistic_directions": [
+        63,
+        61.0
+      ],
+      "target": 63,
+      "status": "witnessed"
+    },
+    {
+      "id": "a2d8cd007152d708",
+      "scenario": "attendance-2",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 43,
+      "floor": 53,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 54,
+      "realistic": 49.0,
+      "realistic_directions": [
+        53,
+        45.0
+      ],
+      "target": 63,
+      "status": "refuted"
+    },
+    {
+      "id": "4f2a2e495bcf7bb4",
+      "scenario": "attendance-2",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 63,
+      "floor": 63,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 63,
+      "realistic": 63.2,
+      "realistic_directions": [
+        63,
+        63.5
+      ],
+      "target": 68,
+      "status": "refuted"
+    },
+    {
+      "id": "acfbcef159530536",
+      "scenario": "attendance-2",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 43,
+      "floor": 53,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 72,
+      "realistic": 49.0,
+      "realistic_directions": [
+        53,
+        45.0
+      ],
+      "target": 63,
+      "status": "open"
+    },
+    {
+      "id": "5a72b7c779c41f82",
+      "scenario": "attendance-3",
+      "variant": "complete",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 61,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "1dcd72409fb32388",
+      "scenario": "attendance-3",
+      "variant": "irrelevant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 61,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "e7942e026db0c248",
+      "scenario": "attendance-3",
+      "variant": "redundant",
+      "label": "supported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "sessions_band",
+        "role",
+        "remote"
+      ],
+      "ceiling": 61,
+      "realistic": 56.5,
+      "realistic_directions": [
+        60,
+        53.0
+      ],
+      "target": 60,
+      "status": "witnessed"
+    },
+    {
+      "id": "5ba6b9b200edd26b",
+      "scenario": "attendance-3",
+      "variant": "withheld",
+      "label": "unsupported",
+      "reference_solver_correct": 43,
+      "floor": 46,
+      "floor_solver_columns": [
+        "sessions_band",
+        "role",
+        "remote"
+      ],
+      "ceiling": 56,
+      "realistic": 45.8,
+      "realistic_directions": [
+        46,
+        45.5
+      ],
+      "target": 60,
+      "status": "refuted"
+    },
+    {
+      "id": "1a66dc7047e31ea7",
+      "scenario": "attendance-3",
+      "variant": "optimistic",
+      "label": "unsupported",
+      "reference_solver_correct": 60,
+      "floor": 60,
+      "floor_solver_columns": [
+        "sessions_band",
+        "remote"
+      ],
+      "ceiling": 61,
+      "realistic": 60.0,
+      "realistic_directions": [
+        60,
+        60.0
+      ],
+      "target": 66,
+      "status": "refuted"
+    },
+    {
+      "id": "342ece41c3a83b1b",
+      "scenario": "attendance-3",
+      "variant": "sparse",
+      "label": "unsupported",
+      "reference_solver_correct": 43,
+      "floor": 42,
+      "floor_solver_columns": [
+        "sessions_band",
+        "role"
+      ],
+      "ceiling": 72,
+      "realistic": 42.5,
+      "realistic_directions": [
+        42,
+        43.0
+      ],
+      "target": 60,
+      "status": "open"
+    }
+  ],
+  "notice": "Floor and realistic estimate come from solvers trained on practice rows only."
+}

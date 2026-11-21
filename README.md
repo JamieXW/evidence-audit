@@ -138,6 +138,38 @@ The one unflagged case has p = 0.065 and a gain of 3 rows. Its promoted bound ad
 the uncertainty on that gain and stays above the target, so it refutes nothing. When
 the dropped column is pure noise, the test flags 1 of 100 core tasks.
 
+## Two-sided interval
+
+`python3 ceiling.py interval --split all` reports three numbers per task, in correct
+rows out of 72:
+
+- **Floor:** the score on the evaluation rows of a lookup-table solver trained only on
+  the practice rows, with its columns chosen by cross-validation on practice. A real
+  solver reaches it, so the best achievable score is at least this.
+- **Ceiling:** the exact any-solver ceiling that collisions prove.
+- **Realistic estimate:** the same procedure run both ways (train on practice and score
+  the evaluation rows, then the reverse, scaled to 72) and averaged. An estimate, not a
+  bound.
+
+A target above the ceiling is refuted; a target at or below the floor is witnessed,
+meaning a practice-trained solver actually reached it; anything between is open.
+
+| Truth (generator) | Witnessed | Open | Refuted |
+|---|---|---|---|
+| supported (60 core tasks) | 59 | 1 | 0 |
+| unsupported (40 core tasks) | 0 | 0 | 40 |
+| unsupported (20 stress tasks) | 0 | 20 | 0 |
+
+No status contradicts the generator. On the stress set the any-solver ceiling is 72,
+so all 20 stay open; the realistic estimate falls below the target on all 20, and the
+promoted restricted bound from the signal check refutes all 20.
+
+This replaces the generator's reference solver as the measure of a realistic score. The
+two often disagree: on the `withheld` variant, the practice-trained floor differs from
+the reference by -7 to +10 rows, because a single 72-row draw is noisy. In the worked
+example (loan-0, `withheld`) the floor is 59, not the reference's 55, so the interval is
+[59, 63] around a target of 68. Truth labels still come from the reference solver.
+
 ## Pairwise F1
 
 The post's clonal-grouping case is scored by pairwise F1, not accuracy.
@@ -204,6 +236,7 @@ python3 ceiling.py build
 python3 ceiling.py demo
 python3 ceiling.py control --split all --output runs/v02-reference.json
 python3 ceiling.py shortcuts --split all --output runs/v02-shortcuts.json
+python3 ceiling.py interval --split all --output runs/v02-interval.json
 python3 ceiling.py prompts --split dev --mode baseline --output runs/v02-baseline-prompts.jsonl
 python3 ceiling.py prompts --split dev --mode certificate --output runs/v02-certificate-prompts.jsonl
 python3 ceiling.py evaluate --split dev --predictions runs/predictions.jsonl
