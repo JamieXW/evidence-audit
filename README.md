@@ -257,7 +257,7 @@ shortcut baselines before any model is run.
 
 ## Run locally
 
-Python 3.9+; no dependencies, credentials, GPU or network.
+Tested on Python 3.12 and 3.14; no dependencies, credentials, GPU or network.
 
 ```sh
 python3 -m unittest discover -s tests
