@@ -138,6 +138,29 @@ The one unflagged case has p = 0.065 and a gain of 3 rows. Its promoted bound ad
 the uncertainty on that gain and stays above the target, so it refutes nothing. When
 the dropped column is pure noise, the test flags 1 of 100 core tasks.
 
+## Pairwise F1
+
+The post's clonal-grouping case is scored by pairwise F1, not accuracy.
+`check_f1_certificate` takes pairs as rows, with label 1 when two items belong to the
+same cluster. Each collision group gets one call, same or different, and
+`best_pairwise_f1` finds the best F1 by sorting groups by their share of truly-same
+pairs and taking the best prefix. Tests check it against brute force and against every
+possible rule on a toy task.
+
+The bound holds for rules that decide each pair from that pair's own features, so its
+scope is `pair_rules`, never every solver. `toy_clonal_task` shows why: 48 cells in 12
+clones, where sibling clones differ only in a hidden light chain.
+
+| Features matched on | F1 ceiling | Start: link similar cells, take connected components |
+|---|---|---|
+| same gene, junction mismatches | 0.575 | 0.592 |
+| plus "linked by the start method" | 0.592 | 0.592 |
+
+With only the two pair features, the start beats the "ceiling", because linking through
+other cells uses information those features lack. Adding the chain feature brings it
+inside the bound. The post's four features include a chain distance; this shows why that
+feature is needed. The proposed target of 1.0 is refuted either way.
+
 ## Known weaknesses
 
 1. **A short script is the strongest auditor here.** `exhaustive` is a group-by and it

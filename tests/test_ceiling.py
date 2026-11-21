@@ -3,9 +3,12 @@ import itertools
 import random
 import unittest
 
-from ceiling import (CONTROLS, CORE, N_PRACTICE, STRESS, build, build_practice,
-                     check_certificate, collisions, evaluate, exhaustive, forced_errors,
-                     shortcuts, signal_check, table)
+from fractions import Fraction
+
+from ceiling import (CONTROLS, CORE, N_PRACTICE, STRESS, best_pairwise_f1, build,
+                     build_practice, check_certificate, check_f1_certificate, collisions,
+                     evaluate, exhaustive, forced_errors, shortcuts, signal_check, table,
+                     toy_clonal_task)
 
 
 class CeilingTests(unittest.TestCase):
@@ -268,6 +271,85 @@ class SignalCheckTests(unittest.TestCase):
             checked += 1
         self.assertEqual(checked, 100)
         self.assertLessEqual(flags, 10)
+
+
+def f1(tp, fp, positives):
+    return Fraction(2 * tp, tp + fp + positives)
+
+
+class PairwiseF1Tests(unittest.TestCase):
+    """Task: a ceiling for pairwise F1, as in the post's clonal-grouping case."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.toy = toy_clonal_task()
+        cls.local = ['same_gene', 'mismatches']
+
+    def test_prefix_matches_brute_force(self):
+        rng = random.Random(5)
+        for _ in range(300):
+            groups = [(rng.randrange(1, 9), rng.randrange(1, 9)) for _ in range(rng.randrange(1, 8))]
+            free = rng.randrange(0, 6)   # positives outside every group
+            total = free + sum(p for p, _ in groups)
+            best = max(f1(free + sum(g[0] for g in pick), sum(g[1] for g in pick), total)
+                       for r in range(len(groups) + 1)
+                       for pick in itertools.combinations(groups, r))
+            self.assertEqual(best_pairwise_f1(groups, total, free)[0], best, groups)
+
+    def test_posts_forty_pair_example(self):
+        # 40 indistinguishable pairs, 30 truly the same: calling them all "same" is best.
+        best, included = best_pairwise_f1([(30, 10)], 30, 0)
+        self.assertEqual((best, included), (Fraction(6, 7), 1))
+
+    def test_no_positive_pairs(self):
+        self.assertEqual(best_pairwise_f1([], 0, 0), (None, 0))
+
+    def test_bound_is_exact_for_pair_rules(self):
+        # Every rule mapping a feature tuple to same/different, checked one by one.
+        for columns in (self.local, self.toy['agent_sees']):
+            rows = table(self.toy, columns).values()
+            keys = sorted({k for k, _ in rows})
+            positives = sum(y for _, y in rows)
+            best = Fraction(0)
+            for calls in itertools.product((0, 1), repeat=len(keys)):
+                rule = dict(zip(keys, calls))
+                tp = sum(rule[k] and y for k, y in rows)
+                fp = sum(rule[k] and not y for k, y in rows)
+                best = max(best, f1(tp, fp, positives))
+            cert = check_f1_certificate(self.toy, collisions(self.toy, columns), columns)
+            self.assertEqual(cert['f1_ceiling'], round(float(best), 4))
+
+    def test_partial_certificates_stay_sound(self):
+        groups = collisions(self.toy)
+        exact = check_f1_certificate(self.toy, groups)['f1_ceiling']
+        rng = random.Random(3)
+        for _ in range(50):
+            subset = [g for g in groups if rng.random() < 0.5]
+            self.assertGreaterEqual(check_f1_certificate(self.toy, subset)['f1_ceiling'], exact)
+
+    def test_clustering_escapes_a_pair_feature_bound(self):
+        # Linking through other cells is information the two pair features lack.
+        cert = check_f1_certificate(self.toy, collisions(self.toy, self.local), self.local)
+        self.assertEqual(cert['scope'], 'restricted')
+        self.assertGreater(self.toy['start_f1'], cert['f1_ceiling'])
+
+    def test_chain_feature_brings_the_start_inside_the_bound(self):
+        cert = check_f1_certificate(self.toy, collisions(self.toy))
+        self.assertEqual(cert['scope'], 'pair_rules')
+        self.assertGreaterEqual(cert['f1_ceiling'], self.toy['start_f1'])
+        self.assertTrue(cert['refutes_target'])
+
+    def test_bad_input(self):
+        groups = collisions(self.toy)
+        rows = table(self.toy)
+        same_label = [i for i in rows if rows[i] == rows[groups[0][0]]][:2]
+        for bad in ([groups[0][0]], [groups[0][0], groups[0][0]], same_label, [10 ** 6, 1]):
+            self.assertEqual(check_f1_certificate(self.toy, [bad])['valid_groups'], 0, bad)
+        self.assertIsNone(check_f1_certificate(self.toy, groups, ['row'])['scope'])
+        broken = copy.deepcopy(self.toy)
+        broken['rows'][0][-1] = 2
+        with self.assertRaises(ValueError):
+            check_f1_certificate(broken, groups)
 
 
 if __name__ == '__main__':
