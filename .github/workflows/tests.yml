@@ -1,0 +1,35 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Answer keys are not committed
+        run: test -z "$(git ls-files data/private data/v02/grading runs/symbolic-control.json)"
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Committed data matches the generators
+        run: |
+          python audit.py build
+          python ceiling.py build
+          git diff --exit-code -- data
+      - name: Commands run end to end
+        run: |
+          python ceiling.py demo > /dev/null
+          python ceiling.py control --split all > /dev/null
+          python ceiling.py interval --split all > /dev/null
+          python ceiling.py tripwire --split all > /dev/null

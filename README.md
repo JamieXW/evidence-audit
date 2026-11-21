@@ -85,7 +85,10 @@ generator, scored on the table. A target is unsupported when that solver falls s
 
 `data/v02/auditor/` holds what an auditor may see: the full table and the proposed
 target. `data/v02/grading/` holds variant, truth, and ceilings, and must never be sent
-to a model. The auditor is on the author's side, so it does see withheld columns and
+to a model. The grading files are not committed: `python3 ceiling.py build` generates
+them locally, and CI fails if they are ever tracked. Every generated file carries a
+canary string so the benchmark can be filtered out of training data. The generator is
+public, so this limits accidental exposure; it is not a security boundary. The auditor is on the author's side, so it does see withheld columns and
 labels; what it must not see is the answer to the audit.
 
 ## Reference results (no LLM)

@@ -6,7 +6,7 @@ import unittest
 from collections import Counter
 from fractions import Fraction
 
-from ceiling import (CONTROLS, CORE, N_PRACTICE, STRESS, best_pairwise_f1, build,
+from ceiling import (CANARY, CONTROLS, CORE, N_PRACTICE, STRESS, best_pairwise_f1, build,
                      build_practice, check_certificate, check_f1_certificate, choose_solver,
                      collisions, evaluate, exhaustive, forced_errors, interval,
                      interval_report, luck_bound, randomised_solver, shortcuts, signal_check,
@@ -43,6 +43,14 @@ class CeilingTests(unittest.TestCase):
                    'n_rows', 'start_correct', 'target_correct', 'columns', 'rows'}
         for task in self.tasks:
             self.assertEqual(set(task), allowed)
+
+    def test_canary_marks_every_file_type(self):
+        for task in self.tasks:
+            self.assertIn(CANARY, task['task'])
+        for key in self.keys:
+            self.assertEqual(key['canary'], CANARY)
+        for prac in build_practice().values():
+            self.assertEqual(prac['canary'], CANARY)
 
     def test_labels_follow_reference_solver(self):
         expected = {'complete': 'supported', 'irrelevant': 'supported', 'redundant': 'supported',

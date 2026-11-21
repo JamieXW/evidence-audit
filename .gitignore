@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 runs/predictions*.jsonl
 runs/results*.json
+
+# Answer keys: generated locally by `python3 audit.py build` and `python3 ceiling.py build`.
+# Never commit them, and never put them in a model's context.
+data/private/
+data/v02/grading/
+runs/symbolic-control.json
+runs/*-details.json
