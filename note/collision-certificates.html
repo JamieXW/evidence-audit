@@ -63,6 +63,8 @@ th:last-child, td:last-child { padding-right: 0; }
 .data td, .data th { font-family: var(--mono); font-size: 0.82rem; white-space: nowrap; }
 .withheld { color: var(--muted); }
 tr.mark td { font-weight: 600; }
+table.wrap th { white-space: normal; vertical-align: bottom; }
+table.wrap td:first-child { min-width: 10rem; }
 .note-line { font-family: var(--sans); font-size: 0.86rem; color: var(--muted); }
 
 svg { display: block; min-width: 34rem; width: 100%; height: auto; }
@@ -168,10 +170,10 @@ footer p { margin: 0; }
   <p>Given a restricted certificate, the check fits two simple lookup learners on the practice rows, one using the kept columns and one using all visible columns, and scores both on the evaluation rows. A permutation test, shuffling the dropped columns among practice rows that share kept values, says whether the gain is more than chance.</p>
   <p>If no signal is detected, the certificate is promoted: its bound becomes the restricted ceiling plus a 95% upper bound on what the dropped columns could add. A promoted result is statistical. It is reported separately and never counted as a proof.</p>
   <figure>
-    <figcaption><b>Table 3.</b> Two auditors that declare a subset of columns. The first drops a column without looking; on 28 supported tasks that column carried the signal, so its refutation is misleading.</figcaption>
+    <figcaption><b>Table 3.</b> Two auditors that declare a subset of columns. The first drops a column without looking; on 28 supported tasks that column carried the signal, so its refutation is misleading. The last two columns count refutations after promotion.</figcaption>
     <div class="scroll">
-      <table>
-        <thead><tr><th>Auditor</th><th class="num">Misleading refutations flagged</th><th class="num">False flags</th><th class="num">Supported targets refuted after promotion</th><th class="num">Stress targets refuted after promotion</th></tr></thead>
+      <table class="wrap">
+        <thead><tr><th>Auditor</th><th class="num">Misleading claims flagged</th><th class="num">False flags</th><th class="num">Supported targets wrongly refuted</th><th class="num">Stress targets refuted</th></tr></thead>
         <tbody>
           <tr><td>Always drops the last visible column</td><td class="num">27 of 28</td><td class="num">0 of 64</td><td class="num">0</td><td class="num">20 of 20</td></tr>
           <tr><td>Drops near-unique columns</td><td class="num">none to flag</td><td class="num">0 of 20</td><td class="num">0</td><td class="num">20 of 20</td></tr>
@@ -244,7 +246,7 @@ footer p { margin: 0; }
   <figure>
     <figcaption><b>Table 6.</b> Tripwire outcomes on the core tasks for four reference solvers.</figcaption>
     <div class="scroll">
-      <table>
+      <table class="wrap">
         <thead><tr><th>Solver</th><th class="num">Within ceiling</th><th class="num">Above, luck plausible</th><th class="num">Alarm</th></tr></thead>
         <tbody>
           <tr><td>Honest, trained on practice rows</td><td class="num">100</td><td class="num">0</td><td class="num">0</td></tr>
