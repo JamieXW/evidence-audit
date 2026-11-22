@@ -249,7 +249,7 @@ feature is needed. The proposed target of 1.0 is refuted either way.
    physical floor; neither is built here. The F1 bound covers per-pair rules only, and
    average precision is not covered.
 6. **Small and synthetic.** 20 scenarios, 5 rule families, 2 held-out families, one
-   author. Each table has only 18 distinct visible patterns in 72 rows, which is why
+   author. Each core table has only 17 or 18 distinct visible patterns in 72 rows, which is why
    exact matching works on the core set at all. Truth labels come from the generating
    rule, not from measurement.
 7. **The tripwire misses small leaks.** On 72 rows it needs about 6 to 10 rows of excess
